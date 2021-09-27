@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:siepegawai/circle.dart';
 import 'package:siepegawai/const.dart';
+import 'package:siepegawai/controllers/cuticontroller.dart';
 import 'package:siepegawai/controllers/reimbursementcontroller.dart';
+import 'package:siepegawai/pages/admin/cuti/detail.dart';
 import 'package:siepegawai/pages/admin/reimbursement/detail.dart';
+import 'package:siepegawai/pages/karyawan/cuti/detail.dart';
+import 'package:siepegawai/pages/karyawan/reimbursement/detail.dart';
 import 'package:siepegawai/theme.dart';
 
-class ReimbursementBelumAdmin extends StatelessWidget {
-  const ReimbursementBelumAdmin({Key key}) : super(key: key);
+class CutiBelum extends StatelessWidget {
+  const CutiBelum({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ReimbursementController _reimbursementController =
-        Get.put(ReimbursementController());
+    CutiController _cutiController = Get.put(CutiController());
     var size = MediaQuery.of(context).size;
     return Container(
       height: size.height,
       padding: EdgeInsets.fromLTRB(18, 18, 18, 0),
-      child: Obx(() => _reimbursementController.isLoading.value
+      child: Obx(() => _cutiController.isLoading.value
           ? Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-              onRefresh: () => _reimbursementController.getDataAll(),
-              child: _reimbursementController.belum.length == 0
+              onRefresh: () => _cutiController.getDataAll(),
+              child: _cutiController.belum.length == 0
                   ? Container(
                       margin: EdgeInsets.only(top: 30),
                       child: Column(
@@ -37,7 +40,7 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      itemCount: _reimbursementController.belum.value.length,
+                      itemCount: _cutiController.belum.value.length,
                       itemBuilder: (context, index) {
                         return Container(
                           width: double.infinity,
@@ -67,14 +70,12 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    _reimbursementController
-                                        .belum.value[index].kode,
+                                    _cutiController.belum.value[index].kode,
                                     style: textBlack3Bold,
                                   ),
                                   CircleButton(
-                                      onTap: () =>
-                                          Get.to(ReimbursementDetailPage(
-                                            id: _reimbursementController
+                                      onTap: () => Get.to(CutiDetailPage(
+                                            id: _cutiController
                                                 .belum.value[index].id,
                                           )),
                                       iconData: Icons.search),
@@ -94,9 +95,7 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                                       text: TextSpan(
                                           style: textBlack,
                                           text: formatter.format(DateTime.parse(
-                                              _reimbursementController
-                                                  .belum
-                                                  .value[index]
+                                              _cutiController.belum.value[index]
                                                   .tanggalPengajuan))),
                                     ),
                                   ),
@@ -118,7 +117,7 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       text: TextSpan(
                                         style: textBlue2Bold,
-                                        text: _reimbursementController
+                                        text: _cutiController
                                             .belum.value[index].nama,
                                       ),
                                     ),
@@ -133,11 +132,14 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                                   overflow: TextOverflow.clip,
                                   text: TextSpan(
                                       style: textBlack2,
-                                      text: "Nominal : Rp. " +
-                                          number_format
-                                              .format(_reimbursementController
-                                                  .belum.value[index].nominal)
-                                              .toString()),
+                                      text: "Cuti Dari " +
+                                          formatterdate.format(DateTime.parse(
+                                              _cutiController
+                                                  .belum.value[index].dari)) +
+                                          " Sampai " +
+                                          formatterdate.format(DateTime.parse(
+                                              _cutiController
+                                                  .belum.value[index].sampai))),
                                 ),
                               ),
                               SizedBox(
@@ -145,23 +147,25 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                               ),
                               Container(
                                 child: Text(
-                                  _reimbursementController
-                                      .belum.value[index].status,
-                                  style: _reimbursementController
+                                  _cutiController.belum.value[index].status,
+                                  style: _cutiController
                                               .belum.value[index].status ==
                                           "Belum Dikonfirmasi"
                                       ? textYellow2Bold
-                                      : _reimbursementController
+                                      : _cutiController
                                                   .belum.value[index].status ==
                                               "Telah Diterima"
                                           ? textGreen2Bold
                                           : textRed2Bold,
                                 ),
                               ),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Row(
                                 children: [
                                   Visibility(
-                                    visible: _reimbursementController
+                                    visible: _cutiController
                                             .belum.value[index].status !=
                                         "Belum Dikonfirmasi",
                                     child: Column(
@@ -174,14 +178,12 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                                         Container(
                                             margin: EdgeInsets.only(left: 10),
                                             child: Text(
-                                              _reimbursementController
-                                                          .belum
-                                                          .value[index]
+                                              _cutiController.belum.value[index]
                                                           .tanggalKonfirmasi ==
                                                       null
                                                   ? "-"
-                                                  : formatter.format(DateTime.parse(
-                                                      _reimbursementController
+                                                  : formatter.format(DateTime
+                                                      .parse(_cutiController
                                                           .belum
                                                           .value[index]
                                                           .tanggalKonfirmasi)),

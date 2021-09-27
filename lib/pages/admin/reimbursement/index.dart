@@ -71,15 +71,6 @@ class _ReimbursementPageState extends State<ReimbursementPage>
               child: Row(
                 children: [
                   Text("Telah Dikonfirmasi "),
-                  Obx(
-                    () => Text(
-                      _reimbursementController.telah.value.length == 0
-                          ? ""
-                          : _reimbursementController.telah.value.length
-                              .toString(),
-                      style: textRed3,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -93,6 +84,7 @@ class _ReimbursementPageState extends State<ReimbursementPage>
           ReimbursementTelahAdmin()
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

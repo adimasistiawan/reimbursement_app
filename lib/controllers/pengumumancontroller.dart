@@ -47,6 +47,17 @@ class PengumumanController extends GetxController {
         getData();
         Get.back();
         Get.back();
+        Get.dialog(AlertDialog(
+          content: Text("Data berhasil dihapus"),
+          actions: [
+            FlatButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Get.back();
+              },
+            )
+          ],
+        ));
       } else {
         Get.back();
         Get.dialog(AlertDialog(
@@ -77,6 +88,17 @@ class PengumumanController extends GetxController {
       if (value.isNull) {
         Get.back();
         getData();
+        Get.dialog(AlertDialog(
+          content: Text("Data berhasil dibuat"),
+          actions: [
+            FlatButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Get.back();
+              },
+            )
+          ],
+        ));
       } else {
         Get.back();
         Get.dialog(AlertDialog(
@@ -108,6 +130,17 @@ class PengumumanController extends GetxController {
         Get.back();
         getDetail(id);
         getData();
+        Get.dialog(AlertDialog(
+          content: Text("Data berhasil diubah"),
+          actions: [
+            FlatButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Get.back();
+              },
+            )
+          ],
+        ));
       } else {
         Get.back();
         Get.dialog(AlertDialog(

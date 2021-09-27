@@ -28,6 +28,8 @@ class User {
   String password;
   String divisi;
   String status;
+  int dihapus;
+  Total total;
 
   User(
       {this.id,
@@ -37,7 +39,9 @@ class User {
       this.noHp,
       this.password,
       this.divisi,
-      this.status});
+      this.status,
+      this.dihapus,
+      this.total});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,6 +52,8 @@ class User {
     password = json['password'];
     divisi = json['divisi'];
     status = json['status'];
+    dihapus = json['dihapus'];
+    total = json['total'] != null ? new Total.fromJson(json['total']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +66,35 @@ class User {
     data['password'] = this.password;
     data['divisi'] = this.divisi;
     data['status'] = this.status;
+    data['dihapus'] = this.dihapus;
+    if (this.total != null) {
+      data['total'] = this.total.toJson();
+    }
+    return data;
+  }
+}
+
+class Total {
+  int total;
+  int telahDiterima;
+  int belumDikonfirmasi;
+  int ditolak;
+
+  Total({this.total, this.telahDiterima, this.belumDikonfirmasi, this.ditolak});
+
+  Total.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    telahDiterima = json['telah_diterima'];
+    belumDikonfirmasi = json['belum_dikonfirmasi'];
+    ditolak = json['ditolak'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['total'] = this.total;
+    data['telah_diterima'] = this.telahDiterima;
+    data['belum_dikonfirmasi'] = this.belumDikonfirmasi;
+    data['ditolak'] = this.ditolak;
     return data;
   }
 }

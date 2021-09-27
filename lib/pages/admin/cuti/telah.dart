@@ -7,19 +7,20 @@ import 'package:siepegawai/circle.dart';
 import 'package:siepegawai/const.dart';
 import 'package:siepegawai/controllers/cuticontroller.dart';
 import 'package:siepegawai/controllers/reimbursementcontroller.dart';
+import 'package:siepegawai/pages/admin/cuti/detail.dart';
 import 'package:siepegawai/pages/admin/reimbursement/detail.dart';
 import 'package:siepegawai/pages/karyawan/cuti/detail.dart';
 import 'package:siepegawai/pages/karyawan/reimbursement/detail.dart';
 import 'package:siepegawai/theme.dart';
 
-class CutiTelahPegawai extends StatefulWidget {
-  const CutiTelahPegawai({Key key}) : super(key: key);
+class CutiTelah extends StatefulWidget {
+  const CutiTelah({Key key}) : super(key: key);
 
   @override
-  _CutiTelahPegawaiState createState() => _CutiTelahPegawaiState();
+  _CutiTelahState createState() => _CutiTelahState();
 }
 
-class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
+class _CutiTelahState extends State<CutiTelah> {
   @override
   Widget build(BuildContext context) {
     CutiController _cutiController = Get.put(CutiController());
@@ -35,7 +36,6 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
     ];
     showAlertDialog(BuildContext context) {
       final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-      // set up the buttons
       Alert(
           context: context,
           title: "Filter",
@@ -149,7 +149,7 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
             DialogButton(
               onPressed: () {
                 if (formkey.currentState.validate()) {
-                  _cutiController.getDataUserFilter();
+                  _cutiController.getDataAllFilter();
                   Get.back();
                 }
               },
@@ -159,6 +159,154 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
               ),
             )
           ]).show();
+      // set up the buttons
+      // Widget cancelButton = FlatButton(
+      //   child: Text("Batal"),
+      //   onPressed: () {
+      //     Get.back();
+      //   },
+      // );
+      // Widget continueButton = FlatButton(
+      //   child: Text("Cari"),
+      //   onPressed: () {
+      //     if (formkey.currentState.validate()) {
+      //       setState(() {
+      //         _cutiController.resetFilter = true;
+      //       });
+      //       _cutiController.getDataAllFilter();
+      //       Get.back();
+      //     }
+      //   },
+      // );
+
+      // // set up the AlertDialog
+      // AlertDialog alert = AlertDialog(
+      //   content: SingleChildScrollView(
+      //     scrollDirection: Axis.vertical,
+      //     child: Container(
+      //       height: 300,
+      //       child: Form(
+      //         key: formkey,
+      //         child: Column(
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             TextFormField(
+      //               onTap: () {
+      //                 DatePicker.showDatePicker(context,
+      //                     showTitleActions: true,
+      //                     theme: DatePickerTheme(
+      //                         headerColor: Colors.orange,
+      //                         backgroundColor: Colors.blue,
+      //                         itemStyle: TextStyle(
+      //                             color: Colors.white,
+      //                             fontWeight: FontWeight.bold,
+      //                             fontSize: 18),
+      //                         doneStyle:
+      //                             TextStyle(color: Colors.white, fontSize: 16)),
+      //                     onChanged: (date) {
+      //                   // print('change $date in time zone ' +
+      //                   //     date.timeZoneOffset.inHours.toString());
+      //                 }, onConfirm: (date) {
+      //                   setState(() {
+      //                     dari = date;
+      //                     print(dari);
+      //                     _cutiController.daritanggal.text = formatterinput
+      //                         .format(DateTime.parse(date.toString()));
+      //                   });
+      //                   print('confirm $date');
+      //                 }, currentTime: dari, locale: LocaleType.id);
+      //               },
+      //               maxLines: null,
+      //               readOnly: true,
+      //               controller: _cutiController.daritanggal,
+      //               decoration: InputDecoration(
+      //                 labelText: "Dari Tanggal",
+      //               ),
+      //               validator: (value) {
+      //                 return value.trim().isEmpty &&
+      //                         _cutiController.sampaitanggal.text != ''
+      //                     ? 'Mohon masukan tanggal'
+      //                     : null;
+      //               },
+      //             ),
+      //             SizedBox(
+      //               height: 10,
+      //             ),
+      //             TextFormField(
+      //               onTap: () {
+      //                 DatePicker.showDatePicker(context,
+      //                     showTitleActions: true,
+      //                     theme: DatePickerTheme(
+      //                         headerColor: Colors.orange,
+      //                         backgroundColor: Colors.blue,
+      //                         itemStyle: TextStyle(
+      //                             color: Colors.white,
+      //                             fontWeight: FontWeight.bold,
+      //                             fontSize: 18),
+      //                         doneStyle:
+      //                             TextStyle(color: Colors.white, fontSize: 16)),
+      //                     onChanged: (date) {
+      //                   // print('change $date in time zone ' +
+      //                   //     date.timeZoneOffset.inHours.toString());
+      //                 }, onConfirm: (date) {
+      //                   setState(() {
+      //                     sampai = date;
+      //                     _cutiController.sampaitanggal.text = formatterinput
+      //                         .format(DateTime.parse(date.toString()));
+      //                   });
+      //                   print('confirm $date');
+      //                 }, currentTime: sampai, locale: LocaleType.id);
+      //               },
+      //               maxLines: null,
+      //               readOnly: true,
+      //               controller: _cutiController.sampaitanggal,
+      //               decoration: InputDecoration(
+      //                 labelText: "Sampai Tanggal",
+      //               ),
+      //               validator: (value) {
+      //                 return value.trim().isEmpty &&
+      //                         _cutiController.daritanggal.text != ''
+      //                     ? 'Mohon masukan tanggal'
+      //                     : null;
+      //               },
+      //             ),
+      //             SizedBox(
+      //               height: 10,
+      //             ),
+      //             TextFormField(
+      //               controller: _cutiController.kode,
+      //               decoration: InputDecoration(
+      //                 labelText: "Kode",
+      //               ),
+      //               validator: (value) {
+      //                 return value.trim().isEmpty &&
+      //                         _cutiController.daritanggal.text == '' &&
+      //                         _cutiController.sampaitanggal.text == ''
+      //                     ? 'Mohon masukan kode'
+      //                     : null;
+      //               },
+      //             ),
+      //             SizedBox(
+      //               height: 10,
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   actions: [
+      //     continueButton,
+      //     cancelButton,
+      //   ],
+      // );
+
+      // // show the dialog
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return alert;
+      //   },
+      // );
     }
 
     return Container(
@@ -217,17 +365,21 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
                 setState(() {
                   _cutiController.status = value;
                 });
-                _cutiController.getDataUserFilter();
+                _cutiController.getDataAllFilter();
               },
             ),
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(18, 10, 18, 0),
+              padding: EdgeInsets.only(
+                top: 10,
+                right: 18,
+                left: 18,
+              ),
               child: Obx(() => _cutiController.isLoading.value
                   ? Center(child: CircularProgressIndicator())
                   : RefreshIndicator(
-                      onRefresh: () => _cutiController.getDataUser()(),
+                      onRefresh: () => _cutiController.getDataAll(),
                       child: _cutiController.telah.length == 0
                           ? Container(
                               margin: EdgeInsets.only(top: 30),
@@ -248,9 +400,9 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
                               itemBuilder: (context, index) {
                                 return Container(
                                   width: double.infinity,
-                                  height: 180,
+                                  height: 220,
                                   padding: EdgeInsets.only(
-                                      top: 10, left: 18, right: 24, bottom: 18),
+                                      top: 18, left: 18, right: 24, bottom: 18),
                                   margin: EdgeInsets.only(top: 10),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -282,7 +434,7 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
                                           ),
                                           CircleButton(
                                               onTap: () =>
-                                                  Get.to(CutiDetailPegawaiPage(
+                                                  Get.to(CutiDetailPage(
                                                     id: _cutiController
                                                         .telah.value[index].id,
                                                   )),
@@ -314,6 +466,30 @@ class _CutiTelahPegawaiState extends State<CutiTelahPegawai> {
                                       ),
                                       SizedBox(
                                         height: 15,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 5),
+                                              child: Icon(
+                                                Icons.person,
+                                                color: Colors.blue[800],
+                                              )),
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(
+                                                style: textBlue2Bold,
+                                                text: _cutiController
+                                                    .telah.value[index].nama,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
                                       ),
                                       Flexible(
                                         child: RichText(

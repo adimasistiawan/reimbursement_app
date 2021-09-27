@@ -164,6 +164,52 @@ class Services {
     }
   }
 
+  Future<Message> updateProfileAdmin(User user) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http
+        .post("$baseUrl/users/profile/update/" + user.id.toString(), body: {
+      'nama': user.nama,
+      'email': user.email,
+      'password': user.password,
+    }, headers: {
+      'Accept': 'application/json',
+      'Authorization': token
+    });
+
+    if (response.statusCode == 200) {
+      Get.back();
+      return null;
+    } else {
+      return Responses().messageFromJson(response.body);
+    }
+  }
+
+  Future<Message> updateProfilePegawai(User user) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.post(
+        "$baseUrl/users/profile/update-pegawai/" + user.id.toString(),
+        body: {
+          'nama': user.nama,
+          'email': user.email,
+          'password': user.password,
+          'alamat': user.alamat,
+          'no_hp': user.noHp,
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': token
+        });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      Get.back();
+      return null;
+    } else {
+      return Responses().messageFromJson(response.body);
+    }
+  }
+
   Future<PengumumanClass> getPengumuman() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
@@ -238,6 +284,7 @@ class Services {
     if (response.statusCode == 200) {
       return Responses().pengumumanDetailFromJson(response.body);
     } else {
+      Get.back();
       return throw Exception('${response.body}');
     }
   }
@@ -245,7 +292,25 @@ class Services {
   Future<ReimbursementClass> getReimbursement() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-    final response = await http.get("$baseUrl/reimbursement/",
+    final response = await http.get("$baseUrl/reimbursement/null/null/null",
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return Responses().reimbursementFromJson(response.body);
+    } else {
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<ReimbursementClass> getReimbursementFilter(
+      String dari, String sampai, String kode) async {
+    dari = dari == '' ? "null" : dari;
+    sampai = sampai == '' ? "null" : sampai;
+    kode = kode == '' ? "null" : kode;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/reimbursement/" + dari + "/" + sampai + "/" + kode,
         headers: {'Accept': 'application/json', 'Authorization': token});
 
     if (response.statusCode == 200) {
@@ -258,7 +323,25 @@ class Services {
   Future<ReimbursementClass> getReimbursementUser() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-    final response = await http.get("$baseUrl/reimbursement/me",
+    final response = await http.get("$baseUrl/reimbursement/me/null/null/null",
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return Responses().reimbursementFromJson(response.body);
+    } else {
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<ReimbursementClass> getReimbursementUserFilter(
+      String dari, String sampai, String kode) async {
+    dari = dari == '' ? "null" : dari;
+    sampai = sampai == '' ? "null" : sampai;
+    kode = kode == '' ? "null" : kode;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/reimbursement/me/" + dari + "/" + sampai + "/" + kode,
         headers: {'Accept': 'application/json', 'Authorization': token});
 
     if (response.statusCode == 200) {
@@ -311,14 +394,28 @@ class Services {
     if (response.statusCode == 200) {
       return Responses().reimbursementDetailFromJson(response.body);
     } else {
+      Get.back();
       return throw Exception('${response.body}');
+    }
+  }
+
+  Future<Message> deleteReimbursement(int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/reimbursement/delete/" + id.toString(),
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return null;
+    } else {
+      return Responses().messageFromJson(response.body);
     }
   }
 
   Future<Message> updateReimbursement(ReimbursementDetail reimbursement) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-    print(reimbursement.alasanDitolak);
     final response = await http.post(
         "$baseUrl/reimbursement/updatestatus/" + reimbursement.id.toString(),
         body: json.encode({
@@ -339,10 +436,102 @@ class Services {
     }
   }
 
+  Future<ReimbursementClass> historyReimbursement(int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/reimbursement/history/" + id.toString() + "/null/null/null",
+        headers: {'Accept': 'application/json', 'Authorization': token});
+    if (response.statusCode == 200) {
+      return Responses().reimbursementFromJson(response.body);
+    } else {
+      Get.back();
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<ReimbursementClass> historyReimbursementFilter(
+      int id, String dari, String sampai, String kode) async {
+    dari = dari == '' ? "null" : dari;
+    sampai = sampai == '' ? "null" : sampai;
+    kode = kode == '' ? "null" : kode;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/reimbursement/history/" +
+            id.toString() +
+            "/" +
+            dari +
+            "/" +
+            sampai +
+            "/" +
+            kode,
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return Responses().reimbursementFromJson(response.body);
+    } else {
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<Message> updateAllReimbursement(
+      File attachment, String nominal, String keterangan, int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+
+    Map<String, String> heads = {
+      'Authorization': '$token',
+      "Content-type": "multipart/form-data",
+      "accept": "application/json"
+    };
+
+    var url = Uri.parse("$baseUrl/reimbursement/update/" + id.toString());
+    var request = http.MultipartRequest("POST", url);
+    request.headers.addAll(heads);
+    if (attachment != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'bukti_pembayaran', attachment.path));
+    } else {
+      request.fields['bukti_pembayaran'] = '';
+    }
+    request.fields['keterangan'] = keterangan;
+    request.fields['nominal'] = nominal.toString();
+    var responses = await request.send();
+    var response = await http.Response.fromStream(responses);
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return Message.fromJson(json.decode(response.body));
+    } else {
+      print('$baseUrl');
+
+      throw Exception('${response.body}');
+    }
+  }
+
   Future<CutiClass> getCutiUser() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-    final response = await http.get("$baseUrl/cuti/me",
+    final response = await http.get("$baseUrl/cuti/me/null/null/null",
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return Responses().cutiFromJson(response.body);
+    } else {
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<CutiClass> getCutiUserFilter(
+      String dari, String sampai, String kode) async {
+    dari = dari == '' ? "null" : dari;
+    sampai = sampai == '' ? "null" : sampai;
+    kode = kode == '' ? "null" : kode;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/cuti/me/" + dari + "/" + sampai + "/" + kode,
         headers: {'Accept': 'application/json', 'Authorization': token});
 
     if (response.statusCode == 200) {
@@ -355,7 +544,25 @@ class Services {
   Future<CutiClass> getCuti() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-    final response = await http.get("$baseUrl/cuti/",
+    final response = await http.get("$baseUrl/cuti/null/null/null",
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return Responses().cutiFromJson(response.body);
+    } else {
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<CutiClass> getCutiFilter(
+      String dari, String sampai, String kode) async {
+    dari = dari == '' ? "null" : dari;
+    sampai = sampai == '' ? "null" : sampai;
+    kode = kode == '' ? "null" : kode;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/cuti/" + dari + "/" + sampai + "/" + kode,
         headers: {'Accept': 'application/json', 'Authorization': token});
 
     if (response.statusCode == 200) {
@@ -373,6 +580,46 @@ class Services {
     if (response.statusCode == 200) {
       return Responses().cutiDetailFromJson(response.body);
     } else {
+      Get.back();
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<CutiClass> historyCuti(int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/cuti/history/" + id.toString() + "/null/null/null",
+        headers: {'Accept': 'application/json', 'Authorization': token});
+    if (response.statusCode == 200) {
+      return Responses().cutiFromJson(response.body);
+    } else {
+      Get.back();
+      return throw Exception('${response.body}');
+    }
+  }
+
+  Future<CutiClass> historyCutiFilter(
+      int id, String dari, String sampai, String kode) async {
+    dari = dari == '' ? "null" : dari;
+    sampai = sampai == '' ? "null" : sampai;
+    kode = kode == '' ? "null" : kode;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get(
+        "$baseUrl/cuti/history/" +
+            id.toString() +
+            "/" +
+            dari +
+            "/" +
+            sampai +
+            "/" +
+            kode,
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      return Responses().cutiFromJson(response.body);
+    } else {
       return throw Exception('${response.body}');
     }
   }
@@ -386,6 +633,58 @@ class Services {
 
     if (response.statusCode == 200) {
       Get.back();
+      return null;
+    } else {
+      return Responses().messageFromJson(response.body);
+    }
+  }
+
+  Future<Message> updateCuti(CutiDetail cuti) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    print(cuti.alasanDitolak);
+    final response =
+        await http.post("$baseUrl/cuti/updatestatus/" + cuti.id.toString(),
+            body: json.encode({
+              'status': cuti.status,
+              'alasan_ditolak': cuti.alasanDitolak,
+            }),
+            headers: {
+          'Accept': 'application/json',
+          'Authorization': token,
+          "Content-Type": "application/json",
+        });
+
+    if (response.statusCode == 200) {
+      Get.back();
+      return null;
+    } else {
+      return Responses().messageFromJson(response.body);
+    }
+  }
+
+  Future<Message> updateDataCuti(Cuti cuti, int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.post("$baseUrl/cuti/update/" + id.toString(),
+        body: {'dari': cuti.dari, 'sampai': cuti.sampai, 'alasan': cuti.alasan},
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
+      Get.back();
+      return null;
+    } else {
+      return Responses().messageFromJson(response.body);
+    }
+  }
+
+  Future<Message> deleteCuti(int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
+    final response = await http.get("$baseUrl/cuti/delete/" + id.toString(),
+        headers: {'Accept': 'application/json', 'Authorization': token});
+
+    if (response.statusCode == 200) {
       return null;
     } else {
       return Responses().messageFromJson(response.body);

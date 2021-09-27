@@ -27,8 +27,9 @@ class Data {
   int reimbursement;
   int cuti;
   List<Pengumuman> pengumuman;
+  Total total;
 
-  Data({this.user, this.reimbursement, this.cuti, this.pengumuman});
+  Data({this.user, this.reimbursement, this.cuti, this.pengumuman, this.total});
 
   Data.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
@@ -40,6 +41,7 @@ class Data {
         pengumuman.add(new Pengumuman.fromJson(v));
       });
     }
+    total = json['total'] != null ? new Total.fromJson(json['total']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +53,9 @@ class Data {
     data['cuti'] = this.cuti;
     if (this.pengumuman != null) {
       data['pengumuman'] = this.pengumuman.map((v) => v.toJson()).toList();
+    }
+    if (this.total != null) {
+      data['total'] = this.total.toJson();
     }
     return data;
   }
@@ -65,6 +70,7 @@ class User {
   String password;
   String divisi;
   String status;
+  int dihapus;
 
   User(
       {this.id,
@@ -74,7 +80,8 @@ class User {
       this.noHp,
       this.password,
       this.divisi,
-      this.status});
+      this.status,
+      this.dihapus});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -85,6 +92,7 @@ class User {
     password = json['password'];
     divisi = json['divisi'];
     status = json['status'];
+    dihapus = json['dihapus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -97,6 +105,7 @@ class User {
     data['password'] = this.password;
     data['divisi'] = this.divisi;
     data['status'] = this.status;
+    data['dihapus'] = this.dihapus;
     return data;
   }
 }
@@ -122,6 +131,31 @@ class Pengumuman {
     data['judul'] = this.judul;
     data['isi'] = this.isi;
     data['tanggal'] = this.tanggal;
+    return data;
+  }
+}
+
+class Total {
+  int total;
+  int telahDiterima;
+  int belumDikonfirmasi;
+  int ditolak;
+
+  Total({this.total, this.telahDiterima, this.belumDikonfirmasi, this.ditolak});
+
+  Total.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    telahDiterima = json['telah_diterima'];
+    belumDikonfirmasi = json['belum_dikonfirmasi'];
+    ditolak = json['ditolak'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['total'] = this.total;
+    data['telah_diterima'] = this.telahDiterima;
+    data['belum_dikonfirmasi'] = this.belumDikonfirmasi;
+    data['ditolak'] = this.ditolak;
     return data;
   }
 }

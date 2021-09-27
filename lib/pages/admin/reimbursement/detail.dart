@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:siepegawai/const.dart';
 import 'package:siepegawai/controllers/pegawaicontroller.dart';
 import 'package:siepegawai/controllers/pengumumancontroller.dart';
@@ -23,7 +24,6 @@ class ReimbursementDetailPage extends StatefulWidget {
 class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
   ReimbursementController _reimbursementController =
       Get.put(ReimbursementController());
-  DateFormat formatter = DateFormat("dd-MM-yyyy");
   @override
   void initState() {
     _reimbursementController.getDetail(widget.id);
@@ -72,61 +72,28 @@ class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      top: 5, left: 10, right: 10, bottom: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    _reimbursementController.detail.value.kode,
-                                    style: textBlack2,
-                                  ),
-                                ),
+                              Text(
+                                _reimbursementController.detail.value.kode,
+                                style: textBlack3Bold,
                               ),
+                            ],
+                          ),
+                          Row(
+                            children: [
                               Container(
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      top: 5, left: 10, right: 10, bottom: 5),
-                                  decoration: BoxDecoration(
-                                    color: _reimbursementController
-                                                .detail.value.status ==
-                                            "Belum Dikonfirmasi"
-                                        ? Colors.yellow[700]
-                                        : _reimbursementController
-                                                    .detail.value.status ==
-                                                "Telah Diterima"
-                                            ? Colors.green[300]
-                                            : Colors.red,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    _reimbursementController
-                                        .detail.value.status,
-                                    style: textWhite2,
-                                  ),
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Icon(
+                                    Icons.schedule,
+                                    size: 16,
+                                  )),
+                              Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.clip,
+                                  text: TextSpan(
+                                      style: textBlack,
+                                      text: formatter.format(DateTime.parse(
+                                          _reimbursementController
+                                              .detail.value.tanggalPengajuan))),
                                 ),
                               ),
                             ],
@@ -138,41 +105,24 @@ class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
                             children: [
                               Container(
                                   padding: EdgeInsets.only(right: 5),
-                                  child: Icon(Icons.person)),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.blue[800],
+                                  )),
                               Flexible(
                                 child: RichText(
                                   overflow: TextOverflow.ellipsis,
                                   text: TextSpan(
-                                    style: textBlack3,
-                                    text: _reimbursementController
-                                        .detail.value.nama,
+                                    style: textBlue2Bold,
+                                    text: (_reimbursementController
+                                        .detail.value.nama),
                                   ),
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                  padding: EdgeInsets.only(right: 5),
-                                  child: Icon(Icons.calendar_today_rounded)),
-                              Flexible(
-                                child: RichText(
-                                  overflow: TextOverflow.clip,
-                                  text: TextSpan(
-                                      style: textBlack2,
-                                      text: formatter.format(DateTime.parse(
-                                          _reimbursementController
-                                              .detail.value.tanggalPengajuan))),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
                           Text(
                             "Nominal : Rp. " +
@@ -182,96 +132,192 @@ class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
                                     .toString(),
                             style: textBlack2,
                           ),
+                          // Visibility(
+                          //   visible:
+                          //       _reimbursementController.detail.value.status ==
+                          //           "Ditolak",
+                          //   child: Text(
+                          //     "Alasan Ditolak :",
+                          //     style: textBlack2,
+                          //   ),
+                          // ),
+                          // Visibility(
+                          //   visible:
+                          //       _reimbursementController.detail.value.status ==
+                          //           "Ditolak",
+                          //   child: Text(
+                          //     _reimbursementController
+                          //                 .detail.value.alasanDitolak ==
+                          //             null
+                          //         ? "-"
+                          //         : _reimbursementController
+                          //             .detail.value.alasanDitolak,
+                          //     style: textBlack2,
+                          //   ),
+                          // ),
+
                           SizedBox(
                             height: 5,
                           ),
+                          Container(
+                            child: Text(
+                              _reimbursementController.detail.value.status,
+                              style: _reimbursementController
+                                          .detail.value.status ==
+                                      "Belum Dikonfirmasi"
+                                  ? textYellow2Bold
+                                  : _reimbursementController
+                                              .detail.value.status ==
+                                          "Telah Diterima"
+                                      ? textGreen2Bold
+                                      : textRed2Bold,
+                            ),
+                          ),
+
                           Row(
                             children: [
                               Visibility(
                                 visible: _reimbursementController
                                         .detail.value.status !=
                                     "Belum Dikonfirmasi",
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        child: Text(
-                                      "Dikonfirmasi pada : ",
-                                      style: textBlack2,
-                                    )),
-                                    Container(
-                                        child: Text(
-                                      _reimbursementController.detail.value
-                                                  .tanggalKonfirmasi ==
-                                              null
-                                          ? "-"
-                                          : formatter.format(DateTime.parse(
-                                              _reimbursementController.detail
-                                                  .value.tanggalKonfirmasi)),
-                                      style: textBlack2,
-                                    )),
-                                  ],
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 15),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          child: Text(
+                                        "Dikonfirmasi pada : ",
+                                        style: textBlack,
+                                      )),
+                                      Container(
+                                          child: Text(
+                                        _reimbursementController.detail.value
+                                                    .tanggalKonfirmasi ==
+                                                null
+                                            ? "-"
+                                            : formatter.format(DateTime.parse(
+                                                _reimbursementController.detail
+                                                    .value.tanggalKonfirmasi)),
+                                        style: textBlack,
+                                      )),
+                                    ],
+                                  ),
                                 ),
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "Keterangan :",
-                            style: textBlack2,
-                          ),
-                          Text(
-                            _reimbursementController.detail.value.keterangan,
-                            style: textBlack2,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Visibility(
-                            visible:
-                                _reimbursementController.detail.value.status ==
-                                    "Ditolak",
-                            child: Text(
-                              "Alasan Ditolak :",
-                              style: textBlack2,
-                            ),
-                          ),
-                          Visibility(
-                            visible:
-                                _reimbursementController.detail.value.status ==
-                                    "Ditolak",
-                            child: Text(
-                              _reimbursementController
-                                          .detail.value.alasanDitolak ==
-                                      null
-                                  ? "-"
-                                  : _reimbursementController
-                                      .detail.value.alasanDitolak,
-                              style: textBlack2,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          FlatButton(
-                            onPressed: () => Get.to(ImagePreview(
-                              image: asset_url +
-                                  _reimbursementController
-                                      .detail.value.buktiPembayaran,
-                            )),
-                            child: Text('Lihat Bukti Pembayaran',
-                                style: TextStyle(color: Colors.blue)),
-                            textColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    color: Colors.blue,
-                                    width: 1,
-                                    style: BorderStyle.solid),
-                                borderRadius: BorderRadius.circular(10)),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 18, left: 18, right: 18, bottom: 18),
+                      margin: EdgeInsets.only(top: 10),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: Offset(0, 3), // changes position of shadow
                           ),
                         ],
+                      ),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Keterangan",
+                                  style: textBlack2Bold,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Text(
+                                _reimbursementController
+                                    .detail.value.keterangan,
+                                style: textBlack2,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: FlatButton(
+                                onPressed: () => Get.to(ImagePreview(
+                                  image: asset_url +
+                                      _reimbursementController
+                                          .detail.value.buktiPembayaran,
+                                )),
+                                child: Text('Lihat Bukti Pembayaran',
+                                    style: TextStyle(color: Colors.blue)),
+                                textColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Colors.blue,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                    borderRadius: BorderRadius.circular(10)),
+                              ),
+                            ),
+                          ]),
+                    ),
+                    Visibility(
+                      visible: _reimbursementController.detail.value.status ==
+                          "Ditolak",
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            top: 18, left: 18, right: 18, bottom: 18),
+                        margin: EdgeInsets.only(top: 10),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Alasan Ditolak",
+                                    style: textRed2Bold,
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  _reimbursementController
+                                              .detail.value.alasanDitolak ==
+                                          null
+                                      ? "-"
+                                      : _reimbursementController
+                                          .detail.value.alasanDitolak,
+                                  style: textBlack2,
+                                ),
+                              ),
+                            ]),
                       ),
                     ),
                     Visibility(
@@ -280,6 +326,7 @@ class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
                       child: Column(
                         children: [
                           Container(
+                            margin: EdgeInsets.only(top: 10),
                             width: double.infinity,
                             child: MaterialButton(
                                 color: Colors.green[400],
@@ -360,30 +407,11 @@ class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
     final GlobalKey<FormState> formkey = GlobalKey<FormState>();
     TextEditingController alasan = TextEditingController();
     // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Batal"),
-      onPressed: () {
-        Get.back();
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Selesai"),
-      onPressed: () {
-        if (formkey.currentState.validate()) {
-          ReimbursementDetail reimbursement = ReimbursementDetail(
-              id: _reimbursementController.detail.value.id,
-              status: "Ditolak",
-              alasanDitolak: alasan.text);
-          _reimbursementController.updateData(reimbursement);
-        }
-      },
-    );
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      content: Container(
-        height: 100,
-        child: Form(
+    Alert(
+        context: context,
+        title: "Masukan Alasan",
+        content: Form(
           key: formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,19 +428,24 @@ class _ReimbursementDetailPageState extends State<ReimbursementDetailPage> {
             ],
           ),
         ),
-      ),
-      actions: [
-        continueButton,
-        cancelButton,
-      ],
-    );
+        buttons: [
+          DialogButton(
+            onPressed: () {
+              if (formkey.currentState.validate()) {
+                ReimbursementDetail reimbursement = ReimbursementDetail(
+                    id: _reimbursementController.detail.value.id,
+                    status: "Ditolak",
+                    alasanDitolak: alasan.text);
+                _reimbursementController.updateData(reimbursement);
+              }
+            },
+            child: Text(
+              "Selesai",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
 
     // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 }

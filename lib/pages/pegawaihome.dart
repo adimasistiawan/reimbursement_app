@@ -13,6 +13,7 @@ import 'package:siepegawai/pages/admin/reimbursement/index.dart';
 import 'package:siepegawai/pages/karyawan/cuti/index.dart';
 import 'package:siepegawai/pages/karyawan/pengumuman/detail.dart';
 import 'package:siepegawai/pages/karyawan/pengumuman/index.dart';
+import 'package:siepegawai/pages/karyawan/profile.dart';
 import 'package:siepegawai/pages/karyawan/reimbursement/index.dart';
 import 'package:siepegawai/theme.dart';
 
@@ -42,14 +43,14 @@ class _PegawaiHomeState extends State<PegawaiHome> {
         () => _homeController.isLoading.value
             ? Center(child: CircularProgressIndicator())
             : RefreshIndicator(
-                onRefresh: () => _homeController.getDataAdmin(),
+                onRefresh: () => _homeController.getDataPegawai(),
                 child: ListView(
                   children: [
                     Stack(
                       children: [
                         Container(
-                          color: navy,
-                          height: size.height * .40,
+                          color: Color(0xff130f40),
+                          height: size.height * .50,
                           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,12 +66,57 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.only(left: 18),
-                                    child: Text(
-                                      "Hallo " +
-                                          _homeController.data_pegawai.value
-                                              .data.user.nama,
-                                      style: textWhite4,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.65,
+                                      padding:
+                                          EdgeInsets.only(left: 18, right: 18),
+                                      child: Flexible(
+                                        child: RichText(
+                                          overflow: TextOverflow.clip,
+                                          text: TextSpan(
+                                              style: textWhite4,
+                                              text: "Hallo " +
+                                                  _homeController.data_pegawai
+                                                      .value.data.user.nama),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Get.to(UbahProfilePegawai()),
+                                    child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      margin:
+                                          EdgeInsets.only(top: 10, left: 18),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[700],
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: Offset(0,
+                                                3), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
+                                          Text(
+                                            "Ubah Profil",
+                                            style: textWhite,
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   GestureDetector(
@@ -78,44 +124,46 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                       showAlertDialog(context);
                                     },
                                     child: Container(
-                                        padding: EdgeInsets.only(right: 18),
+                                        padding: EdgeInsets.all(8),
+                                        margin:
+                                            EdgeInsets.only(left: 10, top: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red[600],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.logout,
-                                                color: Colors.red),
+                                            Icon(
+                                              Icons.logout,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ),
                                             Text(
                                               "Keluar",
-                                              style: textRed3,
+                                              style: textWhite,
                                             )
                                           ],
                                         )),
                                   )
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 200),
-                          padding: EdgeInsets.only(right: 15.0, left: 15),
-                          height: MediaQuery.of(context).size.height - 50.0,
-                          child: GridView.count(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 15,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 0.8,
-                            primary: false,
-                            children: [
                               Padding(
-                                padding: EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    left: 5.0,
-                                    right: 5.0),
-                                child: InkWell(
-                                  onTap: () => Get.to(CutiPegawaiPage()),
-                                  child: Container(
+                                padding: EdgeInsets.only(right: 15.0, left: 15),
+                                child: Container(
+                                    margin: EdgeInsets.only(top: 40),
                                     padding: EdgeInsets.all(18),
+                                    width: double.infinity,
                                     decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(15.0),
@@ -128,59 +176,50 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                         ],
                                         color: Colors.white),
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Container(
-                                            width: 100,
-                                            child: Image.asset(
-                                                'assets/documents.png')),
-                                        SizedBox(
-                                          height: 20,
+                                        Text(
+                                          "Rp." +
+                                              number_format
+                                                  .format(_homeController
+                                                              .data_pegawai
+                                                              .value
+                                                              .data
+                                                              .total
+                                                              .total ==
+                                                          null
+                                                      ? 0
+                                                      : _homeController
+                                                          .data_pegawai
+                                                          .value
+                                                          .data
+                                                          .total
+                                                          .total)
+                                                  .toString(),
+                                          style: textBlue4Bold,
                                         ),
                                         Text(
-                                          "Cuti",
-                                          style: textBlack3,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Visibility(
-                                          visible: _homeController.data_pegawai
-                                                  .value.data.cuti >
-                                              0,
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 6, vertical: 3),
-                                            decoration: BoxDecoration(
-                                              color: Colors.red,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.3),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 1,
-                                                  offset: Offset(0,
-                                                      2), // changes position of shadow
-                                                ),
-                                              ],
-                                            ),
-                                            child: Text(
-                                              _homeController
-                                                  .data_pegawai.value.data.cuti
-                                                  .toString(),
-                                              style: textWhite2,
-                                            ),
-                                          ),
-                                        ),
+                                          "Total Reimbursement Bulan Ini",
+                                          style: textBlack,
+                                        )
                                       ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                    )),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 320),
+                          padding: EdgeInsets.only(right: 15.0, left: 15),
+                          height: MediaQuery.of(context).size.height - 50.0,
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 15,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 0.8,
+                            primary: false,
+                            children: [
                               Padding(
                                 padding: EdgeInsets.only(
                                     top: 5.0,
@@ -217,7 +256,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                         ),
                                         Text(
                                           "Reimbursement",
-                                          style: textBlack3,
+                                          style: textBlack2Bold,
                                         ),
                                         SizedBox(
                                           height: 10,
@@ -257,12 +296,87 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 5.0,
+                                    bottom: 5.0,
+                                    left: 5.0,
+                                    right: 5.0),
+                                child: InkWell(
+                                  onTap: () => Get.to(CutiPegawaiPage()),
+                                  child: Container(
+                                    padding: EdgeInsets.all(18),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 3.0,
+                                              blurRadius: 5.0)
+                                        ],
+                                        color: Colors.white),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                            width: 100,
+                                            child: Image.asset(
+                                                'assets/documents.png')),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "Cuti",
+                                          style: textBlack2Bold,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Visibility(
+                                          visible: _homeController.data_pegawai
+                                                  .value.data.cuti >
+                                              0,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 6, vertical: 3),
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 1,
+                                                  offset: Offset(0,
+                                                      2), // changes position of shadow
+                                                ),
+                                              ],
+                                            ),
+                                            child: Text(
+                                              _homeController
+                                                  .data_pegawai.value.data.cuti
+                                                  .toString(),
+                                              style: textWhite2,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20),
-                          margin: EdgeInsets.only(top: 460),
+                          margin: EdgeInsets.only(top: 580),
                           child: Column(
                             children: [
                               Row(
@@ -283,94 +397,126 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin: EdgeInsets.only(top: 30),
-                                height: 150,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: _homeController.data_pegawai
-                                        .value.data.pengumuman.length,
-                                    itemBuilder: (context, index) {
-                                      print(_homeController.data_pegawai.value
-                                          .data.pengumuman.length);
-                                      return GestureDetector(
-                                        onTap: () =>
-                                            Get.to(PengumumanPegawaiDetail(
-                                          id: _homeController.data_pegawai.value
-                                              .data.pengumuman[index].id,
-                                        )),
-                                        child: Container(
-                                          width: 280,
-                                          height: 150,
-                                          padding: EdgeInsets.all(18),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.2),
-                                                    spreadRadius: 3.0,
-                                                    blurRadius: 5.0)
-                                              ],
-                                              color: Colors.white),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              // Text(
-                                              //   _homeController.data_pegawai.value
-                                              //       .data.pengumuman[index].judul,
-                                              //   style: textBlack3Bold,
-                                              // ),
-                                              Flexible(
-                                                child: RichText(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  text: TextSpan(
-                                                      style: textBlack3Bold,
-                                                      text: _homeController
-                                                          .data_pegawai
-                                                          .value
-                                                          .data
-                                                          .pengumuman[index]
-                                                          .judul),
-                                                ),
-                                              ),
-                                              Text(
-                                                formatter.format(DateTime.parse(
-                                                    _homeController
-                                                        .data_pegawai
-                                                        .value
-                                                        .data
-                                                        .pengumuman[index]
-                                                        .tanggal)),
-                                                style: textBlack3,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Flexible(
-                                                child: RichText(
-                                                  overflow: TextOverflow.clip,
-                                                  text: TextSpan(
-                                                      style: textBlack2,
-                                                      text: _homeController
-                                                          .data_pegawai
-                                                          .value
-                                                          .data
-                                                          .pengumuman[index]
-                                                          .isi),
-                                                ),
-                                              )
-                                            ],
+                              _homeController.data_pegawai.value.data.pengumuman
+                                          .length ==
+                                      0
+                                  ? Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              "Tidak Ada",
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    }),
-                              )
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      height: 150,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: _homeController
+                                              .data_pegawai
+                                              .value
+                                              .data
+                                              .pengumuman
+                                              .length,
+                                          itemBuilder: (context, index) {
+                                            print(_homeController.data_pegawai
+                                                .value.data.pengumuman.length);
+                                            return GestureDetector(
+                                              onTap: () => Get.to(
+                                                  PengumumanPegawaiDetail(
+                                                id: _homeController
+                                                    .data_pegawai
+                                                    .value
+                                                    .data
+                                                    .pengumuman[index]
+                                                    .id,
+                                              )),
+                                              child: Container(
+                                                width: 280,
+                                                height: 150,
+                                                padding: EdgeInsets.all(18),
+                                                margin:
+                                                    EdgeInsets.only(right: 10),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.2),
+                                                          spreadRadius: 2.0,
+                                                          blurRadius: 5.0)
+                                                    ],
+                                                    color: Colors.blue[300]),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    // Text(
+                                                    //   _homeController.data_pegawai.value
+                                                    //       .data.pengumuman[index].judul,
+                                                    //   style: textBlack3Bold,
+                                                    // ),
+                                                    Flexible(
+                                                      child: RichText(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        text: TextSpan(
+                                                            style:
+                                                                textWhite3Bold,
+                                                            text: _homeController
+                                                                .data_pegawai
+                                                                .value
+                                                                .data
+                                                                .pengumuman[
+                                                                    index]
+                                                                .judul),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      formatter.format(DateTime
+                                                          .parse(_homeController
+                                                              .data_pegawai
+                                                              .value
+                                                              .data
+                                                              .pengumuman[index]
+                                                              .tanggal)),
+                                                      style: textWhite3,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Flexible(
+                                                      child: RichText(
+                                                        overflow:
+                                                            TextOverflow.clip,
+                                                        text: TextSpan(
+                                                            style: textWhite2,
+                                                            text: _homeController
+                                                                .data_pegawai
+                                                                .value
+                                                                .data
+                                                                .pengumuman[
+                                                                    index]
+                                                                .isi),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                    )
                             ],
                           ),
                         )

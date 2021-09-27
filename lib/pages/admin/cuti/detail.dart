@@ -2,28 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:siepegawai/const.dart';
-import 'package:siepegawai/controllers/reimbursementcontroller.dart';
+import 'package:siepegawai/controllers/cuticontroller.dart';
 import 'package:siepegawai/imagepreview.dart';
-import 'package:siepegawai/pages/admin/reimbursement/history.dart';
-import 'package:siepegawai/pages/karyawan/reimbursement/edit.dart';
+import 'package:siepegawai/model/cuti.dart';
 import 'package:siepegawai/theme.dart';
 
-class ReimbursementDetailPegawaiPage extends StatefulWidget {
+class CutiDetailPage extends StatefulWidget {
   @override
   int id;
-  ReimbursementDetailPegawaiPage({this.id});
-  _ReimbursementDetailPegawaiPageState createState() =>
-      _ReimbursementDetailPegawaiPageState();
+  CutiDetailPage({this.id});
+  _CutiDetailPageState createState() => _CutiDetailPageState();
 }
 
-class _ReimbursementDetailPegawaiPageState
-    extends State<ReimbursementDetailPegawaiPage> {
-  ReimbursementController _reimbursementController =
-      Get.put(ReimbursementController());
+class _CutiDetailPageState extends State<CutiDetailPage> {
+  CutiController _cutiController = Get.put(CutiController());
+  DateFormat formatter = DateFormat("dd-MM-yyyy");
   @override
   void initState() {
-    _reimbursementController.getDetail(widget.id);
+    _cutiController.getDetail(widget.id);
     // TODO: implement initState
     super.initState();
   }
@@ -36,10 +34,10 @@ class _ReimbursementDetailPegawaiPageState
         appBar: AppBar(
             backgroundColor: navy,
             title: Text(
-              "Detail Reimbursement",
+              "Detail Cuti",
               style: textWhite3,
             )),
-        body: Obx(() => _reimbursementController.isLoading2.value
+        body: Obx(() => _cutiController.isLoading2.value
             ? Center(child: CircularProgressIndicator())
             : Container(
                 height: size.height,
@@ -70,7 +68,7 @@ class _ReimbursementDetailPegawaiPageState
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                _reimbursementController.detail.value.kode,
+                                _cutiController.detail.value.kode,
                                 style: textBlack3Bold,
                               ),
                             ],
@@ -89,7 +87,7 @@ class _ReimbursementDetailPegawaiPageState
                                   text: TextSpan(
                                       style: textBlack,
                                       text: formatter.format(DateTime.parse(
-                                          _reimbursementController
+                                          _cutiController
                                               .detail.value.tanggalPengajuan))),
                                 ),
                               ),
@@ -98,86 +96,85 @@ class _ReimbursementDetailPegawaiPageState
                           SizedBox(
                             height: 15,
                           ),
-                          Text(
-                            "Nominal : Rp. " +
-                                number_format
-                                    .format(_reimbursementController
-                                        .detail.value.nominal)
-                                    .toString(),
-                            style: textBlack2,
+                          Row(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.blue[800],
+                                  )),
+                              Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                    style: textBlue2Bold,
+                                    text: _cutiController.detail.value.nama,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          // Visibility(
-                          //   visible:
-                          //       _reimbursementController.detail.value.status ==
-                          //           "Ditolak",
-                          //   child: Text(
-                          //     "Alasan Ditolak :",
-                          //     style: textBlack2,
-                          //   ),
-                          // ),
-                          // Visibility(
-                          //   visible:
-                          //       _reimbursementController.detail.value.status ==
-                          //           "Ditolak",
-                          //   child: Text(
-                          //     _reimbursementController
-                          //                 .detail.value.alasanDitolak ==
-                          //             null
-                          //         ? "-"
-                          //         : _reimbursementController
-                          //             .detail.value.alasanDitolak,
-                          //     style: textBlack2,
-                          //   ),
-                          // ),
-
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            child: RichText(
+                              overflow: TextOverflow.clip,
+                              text: TextSpan(
+                                  style: textBlack2,
+                                  text: "Cuti Dari " +
+                                      formatterdate.format(DateTime.parse(
+                                          _cutiController.detail.value.dari)) +
+                                      " Sampai " +
+                                      formatterdate.format(DateTime.parse(
+                                          _cutiController
+                                              .detail.value.sampai))),
+                            ),
+                          ),
                           SizedBox(
                             height: 5,
                           ),
                           Container(
                             child: Text(
-                              _reimbursementController.detail.value.status,
-                              style: _reimbursementController
-                                          .detail.value.status ==
+                              _cutiController.detail.value.status,
+                              style: _cutiController.detail.value.status ==
                                       "Belum Dikonfirmasi"
                                   ? textYellow2Bold
-                                  : _reimbursementController
-                                              .detail.value.status ==
+                                  : _cutiController.detail.value.status ==
                                           "Telah Diterima"
                                       ? textGreen2Bold
                                       : textRed2Bold,
                             ),
                           ),
-
+                          SizedBox(
+                            height: 15,
+                          ),
                           Row(
                             children: [
                               Visibility(
-                                visible: _reimbursementController
-                                        .detail.value.status !=
+                                visible: _cutiController.detail.value.status !=
                                     "Belum Dikonfirmasi",
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 15),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                          child: Text(
-                                        "Dikonfirmasi pada : ",
-                                        style: textBlack,
-                                      )),
-                                      Container(
-                                          child: Text(
-                                        _reimbursementController.detail.value
-                                                    .tanggalKonfirmasi ==
-                                                null
-                                            ? "-"
-                                            : formatter.format(DateTime.parse(
-                                                _reimbursementController.detail
-                                                    .value.tanggalKonfirmasi)),
-                                        style: textBlack,
-                                      )),
-                                    ],
-                                  ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        child: Text(
+                                      "Dikonfirmasi pada : ",
+                                      style: textBlack,
+                                    )),
+                                    Container(
+                                        child: Text(
+                                      _cutiController.detail.value
+                                                  .tanggalKonfirmasi ==
+                                              null
+                                          ? "-"
+                                          : formatter.format(DateTime.parse(
+                                              _cutiController.detail.value
+                                                  .tanggalKonfirmasi)),
+                                      style: textBlack,
+                                    )),
+                                  ],
                                 ),
                               )
                             ],
@@ -210,7 +207,7 @@ class _ReimbursementDetailPegawaiPageState
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Keterangan",
+                                  "Alasan",
                                   style: textBlack2Bold,
                                 ),
                               ],
@@ -218,35 +215,14 @@ class _ReimbursementDetailPegawaiPageState
                             Container(
                               margin: EdgeInsets.only(top: 10),
                               child: Text(
-                                _reimbursementController
-                                    .detail.value.keterangan,
+                                _cutiController.detail.value.alasan,
                                 style: textBlack2,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10),
-                              child: FlatButton(
-                                onPressed: () => Get.to(ImagePreview(
-                                  image: asset_url +
-                                      _reimbursementController
-                                          .detail.value.buktiPembayaran,
-                                )),
-                                child: Text('Lihat Bukti Pembayaran',
-                                    style: TextStyle(color: Colors.blue)),
-                                textColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.blue,
-                                        width: 1,
-                                        style: BorderStyle.solid),
-                                    borderRadius: BorderRadius.circular(10)),
                               ),
                             ),
                           ]),
                     ),
                     Visibility(
-                      visible: _reimbursementController.detail.value.status ==
-                          "Ditolak",
+                      visible: _cutiController.detail.value.status == "Ditolak",
                       child: Container(
                         padding: EdgeInsets.only(
                             top: 18, left: 18, right: 18, bottom: 18),
@@ -282,11 +258,10 @@ class _ReimbursementDetailPegawaiPageState
                               Container(
                                 margin: EdgeInsets.only(top: 10),
                                 child: Text(
-                                  _reimbursementController
-                                              .detail.value.alasanDitolak ==
+                                  _cutiController.detail.value.alasanDitolak ==
                                           null
                                       ? "-"
-                                      : _reimbursementController
+                                      : _cutiController
                                           .detail.value.alasanDitolak,
                                   style: textBlack2,
                                 ),
@@ -295,30 +270,46 @@ class _ReimbursementDetailPegawaiPageState
                       ),
                     ),
                     Visibility(
-                      visible: _reimbursementController.detail.value.status ==
+                      visible: _cutiController.detail.value.status ==
                           "Belum Dikonfirmasi",
                       child: Column(
                         children: [
                           Container(
-                            width: double.infinity,
                             margin: EdgeInsets.only(top: 10),
+                            width: double.infinity,
                             child: MaterialButton(
                                 color: Colors.green[400],
-                                splashColor: Colors.orange,
+                                splashColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
-                                  'Ubah',
+                                  'Terima',
                                   style: textWhite2,
                                 ),
                                 onPressed: () {
-                                  Get.to(UbahReimbursement());
+                                  showAlertDialog(context);
+                                }),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            child: MaterialButton(
+                                color: Colors.red,
+                                splashColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  'Tolak',
+                                  style: textWhite2,
+                                ),
+                                onPressed: () {
+                                  showAlertDialog2(context);
                                 }),
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               )));
@@ -335,14 +326,17 @@ class _ReimbursementDetailPegawaiPageState
     Widget continueButton = FlatButton(
       child: Text("Ya"),
       onPressed: () {
-        _reimbursementController
-            .deleteReimbursement(_reimbursementController.detail.value.id);
+        CutiDetail cuti = CutiDetail(
+            id: _cutiController.detail.value.id,
+            status: "Telah Diterima",
+            alasanDitolak: "");
+        _cutiController.updateData(cuti);
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      content: Text("Apakah kamu yakin ingin menghapus data ini?"),
+      content: Text("Apakah anda yakin ingin menerima pengajuan ini ?"),
       actions: [
         continueButton,
         cancelButton,
@@ -356,5 +350,49 @@ class _ReimbursementDetailPegawaiPageState
         return alert;
       },
     );
+  }
+
+  showAlertDialog2(BuildContext context) {
+    final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+    TextEditingController alasan = TextEditingController();
+
+    Alert(
+        context: context,
+        title: "Masukan Alasan",
+        content: Form(
+          key: formkey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: alasan,
+                decoration: InputDecoration(
+                  labelText: "Alasan",
+                ),
+                validator: (value) {
+                  return value.trim().isEmpty ? 'Mohon masukan alasan' : null;
+                },
+              ),
+            ],
+          ),
+        ),
+        buttons: [
+          DialogButton(
+            onPressed: () {
+              if (formkey.currentState.validate()) {
+                CutiDetail cuti = CutiDetail(
+                    id: _cutiController.detail.value.id,
+                    status: "Ditolak",
+                    alasanDitolak: alasan.text);
+                _cutiController.updateData(cuti);
+              }
+            },
+            child: Text(
+              "Selesai",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
+    // set up the AlertDialog
   }
 }

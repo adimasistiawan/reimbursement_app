@@ -2,37 +2,19 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siepegawai/controllers/homecontroller.dart';
 import 'package:siepegawai/controllers/pegawaicontroller.dart';
 import 'package:siepegawai/theme.dart';
 
-class TambahPegawai extends StatefulWidget {
+class UbahProfilePegawai extends StatefulWidget {
   @override
-  _TambahPegawaiState createState() => _TambahPegawaiState();
+  _UbahProfilePegawaiState createState() => _UbahProfilePegawaiState();
 }
 
-class _TambahPegawaiState extends State<TambahPegawai> {
-  PegawaiController _controller = Get.put(PegawaiController());
+class _UbahProfilePegawaiState extends State<UbahProfilePegawai> {
+  HomeController _controller = Get.put(HomeController());
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  String divisival;
-  List divisi = [
-    "IT Support",
-    "Web Developer",
-    "Mobile Developer",
-    "Desktop Developer",
-    "Game Developer"
-  ];
-  @override
-  void initState() {
-    _controller.nama.text = '';
-    _controller.email.text = '';
-    _controller.password.text = '';
-    _controller.alamat.text = '';
-    _controller.no_hp.text = '';
-    _controller.divisi = '';
-    // TODO: implement initState
-    super.initState();
-  }
-
+  bool changepass = false;
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -42,7 +24,7 @@ class _TambahPegawaiState extends State<TambahPegawai> {
       appBar: AppBar(
           backgroundColor: navy,
           title: Text(
-            "Tambah Data",
+            "Ubah Profil",
             style: textWhite3,
           )),
       body: Container(
@@ -73,7 +55,7 @@ class _TambahPegawaiState extends State<TambahPegawai> {
                       ? 'Mohon masukan Email'
                       : EmailValidator.validate(value)
                           ? null
-                          : "Mohon masukan email dengan benar";
+                          : "Mohon masukan format email yang benar";
                 },
               ),
               SizedBox(
@@ -101,50 +83,48 @@ class _TambahPegawaiState extends State<TambahPegawai> {
                 },
               ),
               SizedBox(
-                height: 16,
+                height: 30,
               ),
-              DropdownButtonFormField(
-                style: textGrey3,
-                decoration: InputDecoration(
-                  labelText: 'Divisi',
-                ),
-                value: divisival,
-                items: divisi.map((value) {
-                  return DropdownMenuItem(
-                    child: Text(value),
-                    value: value,
-                  );
-                }).toList(),
-                onChanged: (value) {
+              GestureDetector(
+                onTap: () {
                   setState(() {
-                    _controller.divisi = value;
-                    divisival = value;
+                    _controller.password.text = "";
+                    if (!changepass) {
+                      changepass = true;
+                    } else {
+                      changepass = false;
+                    }
                   });
                 },
-                validator: (value) {
-                  if (value == null) {
-                    return "Mohon pilih Divisi";
-                  } else {
-                    return null;
-                  }
-                },
+                child: Text(
+                  changepass ? "Batal Ubah Password" : "Ubah Password",
+                  style: changepass ? textRed3 : textYellow3,
+                ),
               ),
               SizedBox(
-                height: 16,
+                height: 10,
               ),
-              TextFormField(
-                obscureText: true,
-                controller: _controller.password,
-                decoration: InputDecoration(
-                  labelText: "Password *",
+              Visibility(
+                visible: changepass,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      obscureText: true,
+                      controller: _controller.password,
+                      decoration: InputDecoration(
+                        labelText: "Password *",
+                      ),
+                      validator: (value) {
+                        return value.trim().isEmpty
+                            ? 'Mohon masukan Password'
+                            : value.trim().length < 8
+                                ? 'Minimum 8 karakter'
+                                : null;
+                      },
+                    ),
+                  ],
                 ),
-                validator: (value) {
-                  return value.trim().isEmpty
-                      ? 'Mohon masukan Password'
-                      : value.trim().length < 8
-                          ? 'Minimum 8 karakter'
-                          : null;
-                },
               ),
               SizedBox(
                 height: 30,
@@ -166,7 +146,8 @@ class _TambahPegawaiState extends State<TambahPegawai> {
                       ),
                       onPressed: () {
                         if (formkey.currentState.validate()) {
-                          _controller.createUser();
+                          _controller.updateUserPegawai(
+                              _controller.data_pegawai.value.data.user.id);
                         }
                       }),
                 ),

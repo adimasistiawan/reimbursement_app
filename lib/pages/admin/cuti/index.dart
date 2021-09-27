@@ -1,32 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siepegawai/controllers/cuticontroller.dart';
 import 'package:siepegawai/controllers/reimbursementcontroller.dart';
 import 'package:siepegawai/model/user.dart';
+import 'package:siepegawai/pages/admin/cuti/belum.dart';
+import 'package:siepegawai/pages/admin/cuti/telah.dart';
 import 'package:siepegawai/pages/admin/reimbursement/belum.dart';
 import 'package:siepegawai/pages/admin/reimbursement/telah.dart';
+import 'package:siepegawai/pages/karyawan/cuti/belum.dart';
+import 'package:siepegawai/pages/karyawan/cuti/tambah.dart';
+import 'package:siepegawai/pages/karyawan/cuti/telah.dart';
 import 'package:siepegawai/pages/karyawan/reimbursement/belum.dart';
 import 'package:siepegawai/pages/karyawan/reimbursement/tambah.dart';
 import 'package:siepegawai/pages/karyawan/reimbursement/telah.dart';
 import 'package:siepegawai/theme.dart';
 
-class ReimbursementPegawaiPage extends StatefulWidget {
+class CutiPage extends StatefulWidget {
   @override
-  _ReimbursementPegawaiPageState createState() =>
-      _ReimbursementPegawaiPageState();
+  _CutiPageState createState() => _CutiPageState();
 }
 
-class _ReimbursementPegawaiPageState extends State<ReimbursementPegawaiPage>
+class _CutiPageState extends State<CutiPage>
     with SingleTickerProviderStateMixin {
-  ReimbursementController _reimbursementController =
-      Get.put(ReimbursementController());
+  CutiController _cutiController = Get.put(CutiController());
 
   List<AllUser> _searchResult = [];
   TabController controller;
 
   @override
   void initState() {
-    _reimbursementController.getDataUser();
+    _cutiController.getDataAll();
     controller = new TabController(vsync: this, length: 2);
     // TODO: implement initState
     super.initState();
@@ -41,7 +45,7 @@ class _ReimbursementPegawaiPageState extends State<ReimbursementPegawaiPage>
       appBar: AppBar(
         backgroundColor: navy,
         title: Text(
-          "Reimbursement",
+          "Cuti",
           style: textWhite3,
         ),
         bottom: new TabBar(
@@ -53,12 +57,22 @@ class _ReimbursementPegawaiPageState extends State<ReimbursementPegawaiPage>
               child: Row(
                 children: [
                   Text("Belum Dikonfirmasi "),
+                  Obx(
+                    () => Text(
+                      _cutiController.belum.value.length == 0
+                          ? ""
+                          : _cutiController.belum.value.length.toString(),
+                      style: textRed3,
+                    ),
+                  ),
                 ],
               ),
             ),
             new Tab(
               child: Row(
-                children: [Text("Telah Dikonfirmasi ")],
+                children: [
+                  Text("Telah Dikonfirmasi "),
+                ],
               ),
             ),
           ],
@@ -66,25 +80,9 @@ class _ReimbursementPegawaiPageState extends State<ReimbursementPegawaiPage>
       ),
       body: new TabBarView(
         controller: controller,
-        children: <Widget>[
-          ReimbursementBelumPegawai(),
-          ReimbursementTelahPegawai()
-        ],
+        children: <Widget>[CutiBelum(), CutiTelah()],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Get.to(TambahReimbursement());
-        },
-        label: Text(
-          'Buat Pengajuan',
-          style: textWhite2,
-        ),
-        icon: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: navy,
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
@@ -5,24 +6,31 @@ import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:siepegawai/circle.dart';
 import 'package:siepegawai/const.dart';
-import 'package:siepegawai/controllers/reimbursementcontroller.dart';
-import 'package:siepegawai/pages/admin/reimbursement/detail.dart';
-import 'package:siepegawai/pages/karyawan/reimbursement/detail.dart';
+import 'package:siepegawai/controllers/pegawaicontroller.dart';
+import 'package:siepegawai/controllers/cuticontroller.dart';
+import 'package:siepegawai/pages/admin/pegawai/ubahpegawai.dart';
+import 'package:siepegawai/pages/admin/cuti/detail.dart';
 import 'package:siepegawai/theme.dart';
 
-class ReimbursementTelahPegawai extends StatefulWidget {
-  const ReimbursementTelahPegawai({Key key}) : super(key: key);
-
+class HistoryCuti extends StatefulWidget {
   @override
-  _ReimbursementTelahPegawaiState createState() =>
-      _ReimbursementTelahPegawaiState();
+  int id;
+  HistoryCuti({this.id});
+  _HistoryCutiState createState() => _HistoryCutiState();
 }
 
-class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
+class _HistoryCutiState extends State<HistoryCuti> {
+  CutiController _cutiController = Get.put(CutiController());
+  PegawaiController _pegawaiController = Get.put(PegawaiController());
+  @override
+  void initState() {
+    _cutiController.getHistory(widget.id);
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ReimbursementController _reimbursementController =
-        Get.put(ReimbursementController());
     var size = MediaQuery.of(context).size;
     DateTime dari = DateTime.now();
     DateTime sampai = DateTime.now();
@@ -30,6 +38,7 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
     String statusval = 'Semua';
     List status = [
       "Semua",
+      "Belum Dikonfirmasi",
       "Telah Diterima",
       "Ditolak",
     ];
@@ -59,7 +68,7 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                             doneStyle:
                                 TextStyle(color: Colors.black, fontSize: 16)),
                         onCancel: () {
-                      _reimbursementController.daritanggal.text = "";
+                      _cutiController.daritanggal.text = "";
                     }, onChanged: (date) {
                       // print('change $date in time zone ' +
                       //     date.timeZoneOffset.inHours.toString());
@@ -67,22 +76,21 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                       setState(() {
                         dari = date;
                         print(dari);
-                        _reimbursementController.daritanggal.text =
-                            formatterinput
-                                .format(DateTime.parse(date.toString()));
+                        _cutiController.daritanggal.text = formatterinput
+                            .format(DateTime.parse(date.toString()));
                       });
                       print('confirm $date');
                     }, currentTime: dari, locale: LocaleType.id);
                   },
                   maxLines: null,
                   readOnly: true,
-                  controller: _reimbursementController.daritanggal,
+                  controller: _cutiController.daritanggal,
                   decoration: InputDecoration(
                     labelText: "Dari Tanggal",
                   ),
                   validator: (value) {
                     return value.trim().isEmpty &&
-                            _reimbursementController.sampaitanggal.text != ''
+                            _cutiController.sampaitanggal.text != ''
                         ? 'Mohon masukan tanggal'
                         : null;
                   },
@@ -105,29 +113,28 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                             doneStyle:
                                 TextStyle(color: Colors.black, fontSize: 16)),
                         onCancel: () {
-                      _reimbursementController.sampaitanggal.text = "";
+                      _cutiController.sampaitanggal.text = "";
                     }, onChanged: (date) {
                       // print('change $date in time zone ' +
                       //     date.timeZoneOffset.inHours.toString());
                     }, onConfirm: (date) {
                       setState(() {
                         sampai = date;
-                        _reimbursementController.sampaitanggal.text =
-                            formatterinput
-                                .format(DateTime.parse(date.toString()));
+                        _cutiController.sampaitanggal.text = formatterinput
+                            .format(DateTime.parse(date.toString()));
                       });
                       print('confirm $date');
                     }, currentTime: sampai, locale: LocaleType.id);
                   },
                   maxLines: null,
                   readOnly: true,
-                  controller: _reimbursementController.sampaitanggal,
+                  controller: _cutiController.sampaitanggal,
                   decoration: InputDecoration(
                     labelText: "Sampai Tanggal",
                   ),
                   validator: (value) {
                     return value.trim().isEmpty &&
-                            _reimbursementController.daritanggal.text != ''
+                            _cutiController.daritanggal.text != ''
                         ? 'Mohon masukan tanggal'
                         : null;
                   },
@@ -136,7 +143,7 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: _reimbursementController.kode,
+                  controller: _cutiController.kode,
                   decoration: InputDecoration(
                     labelText: "Kode",
                   ),
@@ -151,7 +158,7 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
             DialogButton(
               onPressed: () {
                 if (formkey.currentState.validate()) {
-                  _reimbursementController.getDataUserFilter();
+                  _cutiController.getHistoryFilter(widget.id);
                   Get.back();
                 }
               },
@@ -163,76 +170,125 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
           ]).show();
     }
 
-    return Container(
-      height: size.height,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            child: Container(
-              padding: EdgeInsets.only(top: 18, right: 18, left: 18),
-              child: MaterialButton(
-                  color: navy,
-                  splashColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+    return Scaffold(
+        backgroundColor: grey,
+        appBar: AppBar(
+            backgroundColor: navy,
+            title: Text(
+              "Riwayat Cuti",
+              style: textWhite3,
+            )),
+        body: Container(
+          height: size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 5, right: 18, left: 18),
+                child: Container(
+                  width: double.infinity,
+                  height: 60,
+                  padding:
+                      EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+                  margin: EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[800],
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Filter',
-                        style: textWhite2,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 7),
-                        child: Icon(
-                          Icons.search,
-                          color: white,
-                          size: 16,
+                      Flexible(
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            style: textWhite2Bold,
+                            text: _pegawaiController.user.value.nama,
+                          ),
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Flexible(
+                        child: RichText(
+                          overflow: TextOverflow.clip,
+                          text: TextSpan(
+                              style: textWhite2Bold,
+                              text: _pegawaiController.user.value.divisi),
+                        ),
+                      ),
                     ],
                   ),
-                  onPressed: () {
-                    showAlertDialog(context);
-                  }),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.40,
-            padding: EdgeInsets.only(right: 18, left: 18),
-            child: DropdownButtonFormField(
-              style: textGrey3,
-              decoration: InputDecoration(),
-              value: _reimbursementController.status,
-              items: status.map((value) {
-                return DropdownMenuItem(
-                  child: Text(
-                    value,
-                    style: textBlack,
+                ),
+              ),
+              Container(
+                child: Container(
+                  padding: EdgeInsets.only(top: 5, right: 18, left: 18),
+                  child: MaterialButton(
+                      color: navy,
+                      splashColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Filter',
+                            style: textWhite2,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 7),
+                            child: Icon(
+                              Icons.search,
+                              color: white,
+                              size: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        showAlertDialog(context);
+                      }),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.49,
+                padding: EdgeInsets.only(right: 18, left: 18),
+                child: DropdownButtonFormField(
+                  style: textGrey3,
+                  decoration: InputDecoration(),
+                  value: _cutiController.status,
+                  items: status.map((value) {
+                    return DropdownMenuItem(
+                      child: Text(
+                        value,
+                        style: textBlack,
+                      ),
+                      value: value,
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _cutiController.status = value;
+                    });
+                    _cutiController.getHistoryFilter(widget.id);
+                  },
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: 5,
+                    right: 18,
+                    left: 18,
                   ),
-                  value: value,
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _reimbursementController.status = value;
-                });
-                _reimbursementController.getDataUserFilter();
-              },
-            ),
-          ),
-          Expanded(
-            child: Container(
-                padding: EdgeInsets.fromLTRB(18, 10, 18, 0),
-                child: Obx(
-                  () => _reimbursementController.isLoading.value
+                  child: Obx(() => _cutiController.isLoading3.value
                       ? Center(child: CircularProgressIndicator())
                       : RefreshIndicator(
-                          onRefresh: () =>
-                              _reimbursementController.getDataUser(),
-                          child: _reimbursementController.telah.length == 0
+                          onRefresh: () => _cutiController.getDataAll(),
+                          child: _cutiController.history.length == 0
                               ? Container(
                                   margin: EdgeInsets.only(top: 30),
                                   child: Column(
@@ -249,12 +305,16 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                 )
                               : ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount: _reimbursementController
-                                      .telah.value.length,
+                                  itemCount:
+                                      _cutiController.history.value.length,
                                   itemBuilder: (context, index) {
                                     return Container(
                                       width: double.infinity,
-                                      height: 180,
+                                      height: _cutiController.history
+                                                  .value[index].status ==
+                                              "Belum Dikonfirmasi"
+                                          ? 150
+                                          : 180,
                                       padding: EdgeInsets.only(
                                           top: 18,
                                           left: 18,
@@ -286,15 +346,15 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                _reimbursementController
-                                                    .telah.value[index].kode,
+                                                _cutiController
+                                                    .history.value[index].kode,
                                                 style: textBlack3Bold,
                                               ),
                                               CircleButton(
-                                                  onTap: () => Get.to(
-                                                          ReimbursementDetailPegawaiPage(
-                                                        id: _reimbursementController
-                                                            .telah
+                                                  onTap: () =>
+                                                      Get.to(CutiDetailPage(
+                                                        id: _cutiController
+                                                            .history
                                                             .value[index]
                                                             .id,
                                                       )),
@@ -317,8 +377,8 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                                       style: textBlack,
                                                       text: formatter.format(
                                                           DateTime.parse(
-                                                              _reimbursementController
-                                                                  .telah
+                                                              _cutiController
+                                                                  .history
                                                                   .value[index]
                                                                   .tanggalPengajuan))),
                                                 ),
@@ -333,14 +393,20 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                               overflow: TextOverflow.clip,
                                               text: TextSpan(
                                                   style: textBlack2,
-                                                  text: "Nominal : Rp. " +
-                                                      number_format
-                                                          .format(
-                                                              _reimbursementController
-                                                                  .telah
+                                                  text: "Cuti Dari " +
+                                                      formatterdate.format(
+                                                          DateTime.parse(
+                                                              _cutiController
+                                                                  .history
                                                                   .value[index]
-                                                                  .nominal)
-                                                          .toString()),
+                                                                  .dari)) +
+                                                      " Sampai " +
+                                                      formatterdate.format(
+                                                          DateTime.parse(
+                                                              _cutiController
+                                                                  .history
+                                                                  .value[index]
+                                                                  .sampai))),
                                             ),
                                           ),
                                           SizedBox(
@@ -348,16 +414,16 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                           ),
                                           Container(
                                             child: Text(
-                                              _reimbursementController
-                                                  .telah.value[index].status,
-                                              style: _reimbursementController
-                                                          .telah
+                                              _cutiController
+                                                  .history.value[index].status,
+                                              style: _cutiController
+                                                          .history
                                                           .value[index]
                                                           .status ==
                                                       "Belum Dikonfirmasi"
                                                   ? textYellow2Bold
-                                                  : _reimbursementController
-                                                              .telah
+                                                  : _cutiController
+                                                              .history
                                                               .value[index]
                                                               .status ==
                                                           "Telah Diterima"
@@ -366,40 +432,39 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                             ),
                                           ),
                                           SizedBox(
-                                            height: 20,
+                                            height: 10,
                                           ),
                                           Row(
                                             children: [
                                               Visibility(
-                                                visible:
-                                                    _reimbursementController
-                                                            .telah
-                                                            .value[index]
-                                                            .status !=
-                                                        "Belum Dikonfirmasi",
+                                                visible: _cutiController.history
+                                                        .value[index].status !=
+                                                    "Belum Dikonfirmasi",
                                                 child: Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Dikonfirmasi pada :"),
+                                                    Text(
+                                                      "Dikonfirmasi pada :",
+                                                      style: textBlack,
+                                                    ),
                                                     Container(
                                                         margin: EdgeInsets.only(
                                                             left: 5),
                                                         child: Text(
-                                                          _reimbursementController
-                                                                      .telah
+                                                          _cutiController
+                                                                      .history
                                                                       .value[
                                                                           index]
                                                                       .tanggalKonfirmasi ==
                                                                   null
                                                               ? "-"
-                                                              : formatter.format(
-                                                                  DateTime.parse(
-                                                                      _reimbursementController
-                                                                          .telah
-                                                                          .value[
-                                                                              index]
-                                                                          .tanggalKonfirmasi)),
+                                                              : formatter.format(DateTime.parse(
+                                                                  _cutiController
+                                                                      .history
+                                                                      .value[
+                                                                          index]
+                                                                      .tanggalKonfirmasi)),
                                                           style: textBlack,
                                                         )),
                                                   ],
@@ -412,11 +477,11 @@ class _ReimbursementTelahPegawaiState extends State<ReimbursementTelahPegawai> {
                                     );
                                   },
                                 ),
-                        ),
-                )),
+                        )),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siepegawai/circle.dart';
 import 'package:siepegawai/controllers/pegawaicontroller.dart';
 import 'package:siepegawai/model/user.dart';
 import 'package:siepegawai/pages/admin/pegawai/pegawaidetail.dart';
@@ -25,7 +26,12 @@ class _PegawaiPageState extends State<PegawaiPage> {
     }
 
     _pegawaiController.alluser.forEach((a) {
-      if (a.nama.contains(text)) _searchResult.add(a);
+      print(text);
+      if (a.nama.toLowerCase().contains(text.toLowerCase())) {
+        setState(() {
+          _searchResult.add(a);
+        });
+      }
     });
 
     setState(() {});
@@ -40,6 +46,7 @@ class _PegawaiPageState extends State<PegawaiPage> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: grey,
@@ -64,6 +71,7 @@ class _PegawaiPageState extends State<PegawaiPage> {
         backgroundColor: navy,
       ),
       body: Container(
+        height: size.height,
         padding: EdgeInsets.fromLTRB(18, 18, 18, 0),
         child: Obx(() => _pegawaiController.isLoading.value
             ? Center(child: CircularProgressIndicator())
@@ -71,52 +79,106 @@ class _PegawaiPageState extends State<PegawaiPage> {
                 children: [
                   Container(
                     height: 50,
-                    width: double.infinity * 0.60,
-                    margin: EdgeInsets.only(top: 10, bottom: 20),
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: Offset(0, 2), // changes position of shadow
-                        ),
-                      ],
-                    ),
+                    width: double.infinity,
                     child: TextFormField(
                       decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                          ),
-                          hintText: "Cari..",
-                          hintStyle: textGrey2,
-                          border: InputBorder.none),
+                        hintText: "Cari ..",
+                        hintStyle: textGrey2,
+                      ),
                       onChanged: onSearchTextChanged,
                     ),
                   ),
-                  _searchResult.length == 0
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _pegawaiController.alluser.value.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () => Get.to(PegawaiDetail(
-                                id: _pegawaiController.alluser.value[index].id,
-                              )),
-                              child: Container(
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: _searchResult.length == 0
+                        ? Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount:
+                                  _pegawaiController.alluser.value.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  width: double.infinity,
+                                  height: 65,
+                                  padding: EdgeInsets.only(
+                                      top: 10, left: 18, right: 18),
+                                  margin: EdgeInsets.only(top: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(
+                                                style: textBlack3Bold,
+                                                text: _pegawaiController
+                                                    .alluser.value[index].nama,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.clip,
+                                              text: TextSpan(
+                                                  style: textBlack,
+                                                  text: _pegawaiController
+                                                      .alluser
+                                                      .value[index]
+                                                      .divisi),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      CircleButton(
+                                          onTap: () => Get.to(PegawaiDetail(
+                                                id: _pegawaiController
+                                                    .alluser.value[index].id,
+                                              )),
+                                          iconData: Icons.search),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _searchResult.length,
+                            itemBuilder: (context, index) {
+                              return Container(
                                 width: double.infinity,
-                                height: 95,
+                                height: 65,
                                 padding: EdgeInsets.only(
-                                    top: 10, left: 18, right: 10),
-                                margin: EdgeInsets.only(top: 10),
+                                    top: 10, left: 18, right: 18),
+                                margin: EdgeInsets.only(top: 15),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      BorderRadius.all(Radius.circular(15)),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.3),
@@ -128,18 +190,28 @@ class _PegawaiPageState extends State<PegawaiPage> {
                                   ],
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(
-                                          style: textBlack3,
-                                          text: _pegawaiController
-                                              .alluser.value[index].nama,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              style: textBlack3Bold,
+                                              text: _searchResult[index].nama,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        CircleButton(
+                                            onTap: () => Get.to(PegawaiDetail(
+                                                  id: _searchResult[index].id,
+                                                )),
+                                            iconData: Icons.search),
+                                      ],
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -148,96 +220,16 @@ class _PegawaiPageState extends State<PegawaiPage> {
                                       child: RichText(
                                         overflow: TextOverflow.clip,
                                         text: TextSpan(
-                                            style: textBlack2,
-                                            text: "Email : " +
-                                                _pegawaiController.alluser
-                                                    .value[index].email),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.clip,
-                                        text: TextSpan(
-                                            style: textBlack2,
-                                            text: "Divisi : " +
-                                                _pegawaiController.alluser
-                                                    .value[index].divisi),
+                                            style: textBlack,
+                                            text: _searchResult[index].divisi),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            );
-                          },
-                        )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _searchResult.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () => Get.to(PegawaiDetail(
-                                id: _searchResult[index].id,
-                              )),
-                              child: Container(
-                                width: double.infinity,
-                                height: 95,
-                                padding: EdgeInsets.only(
-                                    top: 10, left: 18, right: 10),
-                                margin: EdgeInsets.only(top: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 2,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(
-                                          style: textBlack3,
-                                          text: _searchResult[index].nama,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.clip,
-                                        text: TextSpan(
-                                            style: textBlack2,
-                                            text: "Email : " +
-                                                _searchResult[index].email),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.clip,
-                                        text: TextSpan(
-                                            style: textBlack2,
-                                            text: "Divisi : " +
-                                                _searchResult[index].divisi),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        )
+                              );
+                            },
+                          ),
+                  )
                 ],
               )),
       ),

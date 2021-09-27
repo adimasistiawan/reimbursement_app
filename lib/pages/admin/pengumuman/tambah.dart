@@ -40,80 +40,31 @@ class _TambahPengumumanState extends State<TambahPengumuman> {
           key: formkey,
           child: ListView(
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 5),
-                child: Text(
-                  "Nama",
-                  style: textBlack3,
+              TextFormField(
+                controller: _controller.judul,
+                decoration: InputDecoration(
+                  labelText: "Judul *",
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: Offset(0, 2), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: TextFormField(
-                  controller: _controller.judul,
-                  decoration: InputDecoration(
-                      hintText: "Masukan Judul",
-                      hintStyle: textGrey3,
-                      border: InputBorder.none),
-                  validator: (value) {
-                    return value.trim().isEmpty ? 'Mohon masukan Judul' : null;
-                  },
-                ),
+                validator: (value) {
+                  return value.trim().isEmpty ? 'Mohon masukan Judul' : null;
+                },
               ),
               SizedBox(
                 height: 16,
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: 5),
-                child: Text(
-                  "Isi",
-                  style: textBlack3,
+              TextFormField(
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                controller: _controller.isi,
+                decoration: InputDecoration(
+                  labelText: "Isi *",
                 ),
-              ),
-              Container(
-                height: 300,
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: Offset(0, 2), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: TextFormField(
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  controller: _controller.isi,
-                  decoration: InputDecoration(
-                      hintText: "Masukan Isi",
-                      hintStyle: textGrey3,
-                      border: InputBorder.none),
-                  validator: (value) {
-                    return value.trim().isEmpty
-                        ? 'Mohon masukan Info Pembayaran'
-                        : null;
-                  },
-                ),
+                validator: (value) {
+                  return value.trim().isEmpty ? 'Mohon masukan Isi' : null;
+                },
               ),
               SizedBox(
-                height: 16,
+                height: 30,
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 10),

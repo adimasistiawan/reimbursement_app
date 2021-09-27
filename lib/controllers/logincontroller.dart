@@ -57,12 +57,12 @@ class LoginController extends GetxController {
     pref.setBool("is_login", true);
   }
 
-  @override
-  void onClose() {
-    password?.dispose();
-    email?.dispose();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   password?.dispose();
+  //   email?.dispose();
+  //   super.onClose();
+  // }
 }
 
 class LoginClass {

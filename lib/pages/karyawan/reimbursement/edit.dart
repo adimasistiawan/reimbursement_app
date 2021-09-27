@@ -7,22 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:siepegawai/const.dart';
 import 'package:siepegawai/controllers/reimbursementcontroller.dart';
+import 'package:siepegawai/imagepreview.dart';
 import 'package:siepegawai/imagepreviewstatic.dart';
 import 'package:siepegawai/theme.dart';
 
-class TambahReimbursement extends StatefulWidget {
+class UbahReimbursement extends StatefulWidget {
   @override
-  _TambahReimbursementState createState() => _TambahReimbursementState();
+  _UbahReimbursementState createState() => _UbahReimbursementState();
 }
 
-class _TambahReimbursementState extends State<TambahReimbursement> {
+class _UbahReimbursementState extends State<UbahReimbursement> {
   ReimbursementController _controller = Get.put(ReimbursementController());
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   @override
   void initState() {
-    _controller.ketarangan.text = '';
-    _controller.nominal.text = '';
     // TODO: implement initState
     super.initState();
   }
@@ -71,9 +71,17 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
             textAlign: TextAlign.center,
           );
         } else {
-          return const Text(
-            'Mohon masukan foto yang jelas',
-            textAlign: TextAlign.center,
+          return GestureDetector(
+            onTap: () => Get.to(ImagePreview(
+              image: asset_url + _controller.detail.value.buktiPembayaran,
+            )),
+            child: Flexible(
+              child: Image.network(
+                asset_url + _controller.detail.value.buktiPembayaran,
+                width: double.infinity * 0.50,
+                height: 200,
+              ),
+            ),
           );
         }
       },
@@ -89,7 +97,7 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
       appBar: AppBar(
           backgroundColor: navy,
           title: Text(
-            "Buat Pengajuan Reimbursement",
+            "Ubah Pengajuan Reimbursement",
             style: textWhite3,
           )),
       body: Container(
@@ -105,7 +113,7 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
               // ),
               FlatButton(
                 onPressed: () => chooseImage(),
-                child: Text('Masukan Foto Bukti Pembayaran',
+                child: Text('Ubah Foto Bukti Pembayaran',
                     style: TextStyle(color: Colors.blue)),
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -125,6 +133,7 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
                 controller: _controller.nominal,
                 decoration: InputDecoration(
                   labelText: "Nominal *",
+                  labelStyle: textGrey3,
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
@@ -142,7 +151,7 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
                 height: 5,
               ),
               Text(
-                "Maksimal 150.000",
+                "Maksimal 100.000",
                 style: TextStyle(fontSize: 12),
               ),
               SizedBox(
@@ -153,7 +162,9 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
                 controller: _controller.ketarangan,
-                decoration: InputDecoration(labelText: "Keterangan *"),
+                decoration: InputDecoration(
+                  labelText: "Keterangan *",
+                ),
                 validator: (value) {
                   return value.trim().isEmpty
                       ? 'Mohon masukan keterangan'
@@ -180,25 +191,11 @@ class _TambahReimbursementState extends State<TambahReimbursement> {
                       ),
                       onPressed: () {
                         if (formkey.currentState.validate()) {
-                          if (tmpFile != null) {
-                            setState(() {
-                              _controller.image = tmpFile;
-                            });
-
-                            _controller.create();
-                          } else {
-                            Get.dialog(AlertDialog(
-                              content: Text("Mohon masukan foto"),
-                              actions: [
-                                FlatButton(
-                                  child: Text("Ok"),
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                )
-                              ],
-                            ));
-                          }
+                          setState(() {
+                            _controller.image = tmpFile;
+                          });
+                          _controller
+                              .updateAllData(_controller.detail.value.id);
                         }
                       }),
                 ),

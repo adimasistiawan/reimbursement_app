@@ -14,22 +14,17 @@ import 'package:siepegawai/controllers/cuticontroller.dart';
 import 'package:siepegawai/controllers/reimbursementcontroller.dart';
 import 'package:siepegawai/theme.dart';
 
-class TambahCuti extends StatefulWidget {
+class UbahCuti extends StatefulWidget {
   @override
-  _TambahCutiState createState() => _TambahCutiState();
+  _UbahCutiState createState() => _UbahCutiState();
 }
 
-class _TambahCutiState extends State<TambahCuti> {
+class _UbahCutiState extends State<UbahCuti> {
   CutiController _controller = Get.put(CutiController());
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  DateTime dari = DateTime.now();
-  DateTime sampai = DateTime.now();
+
   @override
   void initState() {
-    _controller.alasan.text = '';
-    _controller.dari.text = '';
-    _controller.sampai.text = '';
-
     // TODO: implement initState
     super.initState();
   }
@@ -38,13 +33,15 @@ class _TambahCutiState extends State<TambahCuti> {
   Widget build(BuildContext context) {
     bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     DateFormat formatterinput = DateFormat("yyyy-MM-dd");
-
+    DateTime dari = DateTime.parse(_controller.detail.value.dari.toString());
+    DateTime sampai =
+        DateTime.parse(_controller.detail.value.sampai.toString());
     return Scaffold(
       backgroundColor: grey,
       appBar: AppBar(
           backgroundColor: navy,
           title: Text(
-            "Buat Pengajuan Cuti",
+            "Ubah Pengajuan Cuti",
             style: textWhite3,
           )),
       body: Container(
@@ -61,35 +58,30 @@ class _TambahCutiState extends State<TambahCuti> {
 
               TextFormField(
                 onTap: () {
-                  DatePicker.showDatePicker(
-                    context,
-                    showTitleActions: true,
-                    minTime: DateTime.now(),
-                    theme: DatePickerTheme(
-                        headerColor: Colors.orange,
-                        backgroundColor: Colors.blue,
-                        itemStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                        doneStyle:
-                            TextStyle(color: Colors.white, fontSize: 16)),
-                    onChanged: (date) {
-                      // print('change $date in time zone ' +
-                      //     date.timeZoneOffset.inHours.toString());
-                    },
-                    onConfirm: (date) {
-                      setState(() {
-                        dari = date;
-                        print(dari);
-                        _controller.dari.text = formatterinput
-                            .format(DateTime.parse(date.toString()));
-                      });
-                      print('confirm $date');
-                    },
-                    currentTime: dari,
-                    locale: LocaleType.id,
-                  );
+                  DatePicker.showDatePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime.now(),
+                      theme: DatePickerTheme(
+                          headerColor: Colors.orange,
+                          backgroundColor: Colors.blue,
+                          itemStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                          doneStyle:
+                              TextStyle(color: Colors.white, fontSize: 16)),
+                      onChanged: (date) {
+                    // print('change $date in time zone ' +
+                    //     date.timeZoneOffset.inHours.toString());
+                  }, onConfirm: (date) {
+                    setState(() {
+                      dari = date;
+                      print(dari);
+                      _controller.dari.text = formatterinput
+                          .format(DateTime.parse(date.toString()));
+                    });
+                    print('confirm $date');
+                  }, currentTime: dari, locale: LocaleType.id);
                 },
                 maxLines: null,
                 readOnly: true,
@@ -138,7 +130,7 @@ class _TambahCutiState extends State<TambahCuti> {
                   labelText: "Sampai Tanggal *",
                 ),
                 validator: (value) {
-                  return value.trim().isEmpty ? 'Mohon masukan tanggal' : null;
+                  return value.trim().isEmpty ? 'Mohon masukan Tanggal' : null;
                 },
               ),
               SizedBox(
@@ -191,7 +183,8 @@ class _TambahCutiState extends State<TambahCuti> {
                               ],
                             ));
                           } else {
-                            _controller.create();
+                            _controller
+                                .updateDataCuti(_controller.detail.value.id);
                           }
                         }
                       }),

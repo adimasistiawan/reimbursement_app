@@ -62,16 +62,44 @@ class _PengumumanPegawaiDetailState extends State<PengumumanPegawaiDetail> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            _pengumumanController.detail.value.judul,
-                            style: textBlack3,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 300,
+                                child: Flexible(
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      style: textBlack3Bold,
+                                      text: _pengumumanController
+                                          .detail.value.judul,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "Tanggal : " +
-                                formatter.format(DateTime.parse(
-                                    _pengumumanController
-                                        .detail.value.tanggal)),
-                            style: textBlack2,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Icon(
+                                    Icons.schedule,
+                                    size: 16,
+                                  )),
+                              Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.clip,
+                                  text: TextSpan(
+                                      style: textBlack,
+                                      text: formatter.format(DateTime.parse(
+                                          _pengumumanController
+                                              .detail.value.tanggal))),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 10,

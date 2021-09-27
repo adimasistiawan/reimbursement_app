@@ -55,30 +55,12 @@ class _CutiPegawaiPageState extends State<CutiPegawaiPage>
               child: Row(
                 children: [
                   Text("Belum Dikonfirmasi "),
-                  Obx(
-                    () => Text(
-                      _cutiController.belum.value.length == 0
-                          ? ""
-                          : _cutiController.belum.value.length.toString(),
-                      style: textRed3,
-                    ),
-                  ),
                 ],
               ),
             ),
             new Tab(
               child: Row(
-                children: [
-                  Text("Telah Dikonfirmasi "),
-                  Obx(
-                    () => Text(
-                      _cutiController.telah.value.length == 0
-                          ? ""
-                          : _cutiController.telah.value.length.toString(),
-                      style: textRed3,
-                    ),
-                  ),
-                ],
+                children: [Text("Telah Dikonfirmasi ")],
               ),
             ),
           ],
@@ -90,7 +72,7 @@ class _CutiPegawaiPageState extends State<CutiPegawaiPage>
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Get.to(TambahCuti());
+          Get.to(TambahReimbursement());
         },
         label: Text(
           'Buat',

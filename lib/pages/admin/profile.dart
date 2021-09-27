@@ -2,25 +2,18 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siepegawai/controllers/homecontroller.dart';
 import 'package:siepegawai/controllers/pegawaicontroller.dart';
 import 'package:siepegawai/theme.dart';
 
-class UbahPegawai extends StatefulWidget {
+class UbahProfileAdmin extends StatefulWidget {
   @override
-  _UbahPegawaiState createState() => _UbahPegawaiState();
+  _UbahProfileAdminState createState() => _UbahProfileAdminState();
 }
 
-class _UbahPegawaiState extends State<UbahPegawai> {
-  PegawaiController _controller = Get.put(PegawaiController());
+class _UbahProfileAdminState extends State<UbahProfileAdmin> {
+  HomeController _controller = Get.put(HomeController());
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  String divisival;
-  List divisi = [
-    "IT Support",
-    "Web Developer",
-    "Mobile Developer",
-    "Desktop Developer",
-    "Game Developer"
-  ];
   bool changepass = false;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +24,7 @@ class _UbahPegawaiState extends State<UbahPegawai> {
       appBar: AppBar(
           backgroundColor: navy,
           title: Text(
-            "Ubah Data",
+            "Ubah Profil",
             style: textWhite3,
           )),
       body: Container(
@@ -66,56 +59,7 @@ class _UbahPegawaiState extends State<UbahPegawai> {
                 },
               ),
               SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _controller.alamat,
-                decoration: InputDecoration(
-                  labelText: "Alamat *",
-                ),
-                validator: (value) {
-                  return value.trim().isEmpty ? 'Mohon masukan Alamat' : null;
-                },
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _controller.no_hp,
-                decoration: InputDecoration(
-                  labelText: "No HP *",
-                ),
-                validator: (value) {
-                  return value.trim().isEmpty ? 'Mohon masukan No HP' : null;
-                },
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              DropdownButtonFormField(
-                style: textBlack3,
-                decoration: InputDecoration(
-                  labelText: 'Divisi',
-                ),
-                value: _controller.divisi,
-                items: divisi.map((value) {
-                  return DropdownMenuItem(
-                    child: Text(value),
-                    value: value,
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _controller.divisi = value;
-                    divisival = value;
-                  });
-                },
-                validator: (value) {
-                  return value.trim().isEmpty ? 'Mohon pilih Divisi' : null;
-                },
-              ),
-              SizedBox(
-                height: 26,
+                height: 20,
               ),
               GestureDetector(
                 onTap: () {
@@ -178,7 +122,8 @@ class _UbahPegawaiState extends State<UbahPegawai> {
                       ),
                       onPressed: () {
                         if (formkey.currentState.validate()) {
-                          _controller.updateUser(_controller.user.value.id);
+                          _controller.updateUserAdmin(
+                              _controller.data_admin.value.data.user.id);
                         }
                       }),
                 ),

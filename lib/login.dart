@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: grey,
       body: Container(
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(22, 100, 22, 0),
+        padding: EdgeInsets.fromLTRB(28, 100, 28, 0),
         child: ListView(
           children: [
             Column(
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Image.asset('assets/mitrait.png'),
                 ),
                 Text(
-                  "Selamat Datang",
+                  "Masuk Untuk Mendapatkan Akses",
                   style: textGrey2,
                 ),
                 SizedBox(
@@ -42,73 +42,29 @@ class _LoginPageState extends State<LoginPage> {
                       key: form,
                       child: Column(
                         children: [
-                          Container(
-                            padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 1,
-                                  blurRadius: 1,
-                                  offset: Offset(
-                                      0, 2), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: TextFormField(
-                              controller: _login.email,
-                              decoration: InputDecoration(
-                                  hintText: "Email",
-                                  hintStyle: textBlack2,
-                                  icon: Icon(
-                                    Icons.mail,
-                                    color: black,
-                                  ),
-                                  border: InputBorder.none),
-                              validator: (value) {
-                                if (value.trim().isEmpty) {
-                                  return "Email required";
-                                }
-                              },
-                            ),
+                          TextFormField(
+                            controller: _login.email,
+                            decoration: InputDecoration(labelText: "Email"),
+                            validator: (value) {
+                              if (value.trim().isEmpty) {
+                                return "Mohon masukan Email";
+                              }
+                            },
                           ),
                           SizedBox(
                             height: 16,
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 1,
-                                  blurRadius: 1,
-                                  offset: Offset(
-                                      0, 2), // changes position of shadow
-                                ),
-                              ],
+                          TextFormField(
+                            controller: _login.password,
+                            decoration: InputDecoration(
+                              labelText: "Password",
                             ),
-                            child: TextFormField(
-                              controller: _login.password,
-                              decoration: InputDecoration(
-                                  hintText: "Password",
-                                  hintStyle: textBlack2,
-                                  icon: Icon(
-                                    Icons.lock,
-                                    color: black,
-                                  ),
-                                  border: InputBorder.none),
-                              validator: (value) {
-                                if (value.trim().isEmpty) {
-                                  return "Password required";
-                                }
-                              },
-                              obscureText: true,
-                            ),
+                            validator: (value) {
+                              if (value.trim().isEmpty) {
+                                return "Mohon masukan Password";
+                              }
+                            },
+                            obscureText: true,
                           ),
                           SizedBox(
                             height: 16,

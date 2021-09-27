@@ -61,16 +61,44 @@ class _PengumumanDetailState extends State<PengumumanDetail> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            _pengumumanController.detail.value.judul,
-                            style: textBlack3,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 300,
+                                child: Flexible(
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      style: textBlack3Bold,
+                                      text: _pengumumanController
+                                          .detail.value.judul,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "Tanggal : " +
-                                formatter.format(DateTime.parse(
-                                    _pengumumanController
-                                        .detail.value.tanggal)),
-                            style: textBlack2,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Icon(
+                                    Icons.schedule,
+                                    size: 16,
+                                  )),
+                              Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.clip,
+                                  text: TextSpan(
+                                      style: textBlack,
+                                      text: formatter.format(DateTime.parse(
+                                          _pengumumanController
+                                              .detail.value.tanggal))),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 10,
@@ -82,43 +110,45 @@ class _PengumumanDetailState extends State<PengumumanDetail> {
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            children: [
-                              Container(
-                                child: MaterialButton(
-                                    color: Colors.red,
-                                    splashColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Text(
-                                      'Hapus',
-                                      style: textWhite2,
-                                    ),
-                                    onPressed: () {
-                                      showAlertDialog(context);
-                                    }),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 20),
-                                child: MaterialButton(
-                                    color: Colors.orange,
-                                    splashColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Text(
-                                      'Ubah',
-                                      style: textWhite2,
-                                    ),
-                                    onPressed: () {
-                                      Get.to(UbahPengumuman());
-                                    }),
-                              ),
-                            ],
-                          )
                         ],
                       ),
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          width: double.infinity,
+                          child: MaterialButton(
+                              color: Colors.green[400],
+                              splashColor: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Ubah',
+                                style: textWhite2,
+                              ),
+                              onPressed: () {
+                                Get.to(UbahPengumuman());
+                              }),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: MaterialButton(
+                              color: Colors.red,
+                              splashColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Hapus',
+                                style: textWhite2,
+                              ),
+                              onPressed: () {
+                                showAlertDialog(context);
+                              }),
+                        ),
+                      ],
                     ),
                   ],
                 ),
