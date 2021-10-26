@@ -180,7 +180,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Rp." +
+                                          "Rp. " +
                                               number_format
                                                   .format(_homeController
                                                               .data_pegawai
@@ -416,7 +416,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                     )
                                   : Container(
                                       margin: EdgeInsets.only(top: 20),
-                                      height: 150,
+                                      height: 175,
                                       child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount: _homeController
@@ -440,7 +440,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                               )),
                                               child: Container(
                                                 width: 280,
-                                                height: 150,
+                                                height: 180,
                                                 padding: EdgeInsets.all(18),
                                                 margin:
                                                     EdgeInsets.only(right: 10),
@@ -455,7 +455,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                                           spreadRadius: 2.0,
                                                           blurRadius: 5.0)
                                                     ],
-                                                    color: Colors.blue[300]),
+                                                    color: Colors.blue[500]),
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
@@ -491,7 +491,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                                               .data
                                                               .pengumuman[index]
                                                               .tanggal)),
-                                                      style: textWhite3,
+                                                      style: textWhite2,
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -509,6 +509,34 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                                                 .pengumuman[
                                                                     index]
                                                                 .isi),
+                                                      ),
+                                                    ),
+
+                                                    GestureDetector(
+                                                      onTap: () => Get.to(
+                                                          PengumumanPegawaiDetail(
+                                                        id: _homeController
+                                                            .data_pegawai
+                                                            .value
+                                                            .data
+                                                            .pengumuman[index]
+                                                            .id,
+                                                      )),
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 10),
+                                                        child: Flexible(
+                                                          child: RichText(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .clip,
+                                                            text: TextSpan(
+                                                                style:
+                                                                    textWhite2Bold,
+                                                                text:
+                                                                    "Lihat Selengkapnya"),
+                                                          ),
+                                                        ),
                                                       ),
                                                     )
                                                   ],

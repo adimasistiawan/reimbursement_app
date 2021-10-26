@@ -55,6 +55,14 @@ class _CutiPegawaiPageState extends State<CutiPegawaiPage>
               child: Row(
                 children: [
                   Text("Belum Dikonfirmasi "),
+                  Obx(
+                    () => Text(
+                      _cutiController.belum.value.length == 0
+                          ? ""
+                          : _cutiController.belum.value.length.toString(),
+                      style: textRed3,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -72,10 +80,10 @@ class _CutiPegawaiPageState extends State<CutiPegawaiPage>
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Get.to(TambahReimbursement());
+          Get.to(TambahCuti());
         },
         label: Text(
-          'Buat',
+          'Buat Pengajuan',
           style: textWhite2,
         ),
         icon: Icon(

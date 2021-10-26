@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siepegawai/const.dart';
 import 'package:siepegawai/controllers/pegawaicontroller.dart';
 import 'package:siepegawai/pages/admin/cuti/history.dart';
 import 'package:siepegawai/pages/admin/pegawai/ubahpegawai.dart';
@@ -155,6 +156,44 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
                       ],
                     ),
                   ),
+                  Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(
+                          top: 18, left: 18, right: 18, bottom: 18),
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Rp. " +
+                                number_format
+                                    .format(_pegawaiController
+                                                .user.value.total.total ==
+                                            null
+                                        ? 0
+                                        : _pegawaiController
+                                            .user.value.total.total)
+                                    .toString(),
+                            style: textBlue4Bold,
+                          ),
+                          Text(
+                            "Total Reimbursement Bulan Ini",
+                            style: textBlack,
+                          )
+                        ],
+                      )),
                   Column(
                     children: [
                       Container(
@@ -174,22 +213,22 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
                               Get.to(UbahPegawai());
                             }),
                       ),
-                      Container(
-                        width: double.infinity,
-                        child: MaterialButton(
-                            color: Colors.red,
-                            splashColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              'Hapus',
-                              style: textWhite2,
-                            ),
-                            onPressed: () {
-                              showAlertDialog(context);
-                            }),
-                      ),
+                      // Container(
+                      //   width: double.infinity,
+                      //   child: MaterialButton(
+                      //       color: Colors.red,
+                      //       splashColor: Colors.white,
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: Text(
+                      //         'Hapus',
+                      //         style: textWhite2,
+                      //       ),
+                      //       onPressed: () {
+                      //         showAlertDialog(context);
+                      //       }),
+                      // ),
                       Container(
                         width: double.infinity,
                         child: FlatButton(

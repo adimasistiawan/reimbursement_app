@@ -72,13 +72,35 @@ class ReimbursementBelumPegawai extends StatelessWidget {
                                         .belum.value[index].kode,
                                     style: textBlack3Bold,
                                   ),
-                                  CircleButton(
-                                      onTap: () =>
-                                          Get.to(ReimbursementDetailPegawaiPage(
-                                            id: _reimbursementController
-                                                .belum.value[index].id,
-                                          )),
-                                      iconData: Icons.search),
+                                  GestureDetector(
+                                    onTap: () =>
+                                        Get.to(ReimbursementDetailPegawaiPage(
+                                      id: _reimbursementController
+                                          .belum.value[index].id,
+                                    )),
+                                    child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Lihat",
+                                              style: textBlack,
+                                            ),
+                                            Icon(
+                                              Icons.remove_red_eye_outlined,
+                                              size: 24,
+                                            ),
+                                          ],
+                                        )),
+                                  ),
                                 ],
                               ),
                               Row(

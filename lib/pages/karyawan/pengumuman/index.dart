@@ -85,7 +85,7 @@ class _PengumumanPegawaiPageState extends State<PengumumanPegawaiPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: 300,
+                                  width: 250,
                                   child: Flexible(
                                     child: RichText(
                                       overflow: TextOverflow.ellipsis,
@@ -97,12 +97,34 @@ class _PengumumanPegawaiPageState extends State<PengumumanPegawaiPage> {
                                     ),
                                   ),
                                 ),
-                                CircleButton(
-                                    onTap: () => Get.to(PengumumanPegawaiDetail(
-                                          id: _pengumumanController
-                                              .pengumuman.value[index].id,
-                                        )),
-                                    iconData: Icons.search),
+                                GestureDetector(
+                                  onTap: () => Get.to(PengumumanPegawaiDetail(
+                                    id: _pengumumanController
+                                        .pengumuman.value[index].id,
+                                  )),
+                                  child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Lihat",
+                                            style: textBlack,
+                                          ),
+                                          Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            size: 24,
+                                          ),
+                                        ],
+                                      )),
+                                ),
                               ],
                             ),
                             Row(

@@ -27,9 +27,11 @@ class CutiController extends GetxController {
   TextEditingController sampaitanggal = TextEditingController();
   TextEditingController kode = TextEditingController();
   String status;
+  int selectedstatus;
 
   @override
   void onInit() {
+    selectedstatus = 1;
     super.onInit();
   }
 

@@ -12,6 +12,212 @@ import 'package:siepegawai/pages/admin/pegawai/ubahpegawai.dart';
 import 'package:siepegawai/pages/admin/reimbursement/detail.dart';
 import 'package:siepegawai/theme.dart';
 
+class FilterStatus extends StatefulWidget {
+  int id;
+  FilterStatus({this.id});
+  @override
+  _FilterStatusState createState() => _FilterStatusState();
+}
+
+class _FilterStatusState extends State<FilterStatus> {
+  ReimbursementController _reimbursementController =
+      Get.put(ReimbursementController());
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      height: MediaQuery.of(context).size.height * .30,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                "Filter Status",
+                style: textBlack3Bold,
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: () => Get.back(),
+                child: Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 25,
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      _reimbursementController.selectedstatus = 1;
+                      _reimbursementController.status = "Semua";
+                    });
+                    _reimbursementController.getHistoryFilter(widget.id);
+                    Get.back();
+                  },
+                  child: Text('Semua',
+                      style: TextStyle(
+                          color: _reimbursementController.selectedstatus == 1
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: 11)),
+                  color: _reimbursementController.selectedstatus == 1
+                      ? Colors.green
+                      : Colors.white,
+                  textColor: _reimbursementController.selectedstatus == 1
+                      ? Colors.white
+                      : Colors.black,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          color: _reimbursementController.selectedstatus == 1
+                              ? Colors.green
+                              : Colors.black,
+                          width: 1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 16),
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      _reimbursementController.selectedstatus = 2;
+                      _reimbursementController.status = "Telah Diterima";
+                    });
+                    _reimbursementController.getHistoryFilter(widget.id);
+                    Get.back();
+                  },
+                  child: Text('Telah Diterima',
+                      style: TextStyle(
+                          color: _reimbursementController.selectedstatus == 2
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: 11)),
+                  color: _reimbursementController.selectedstatus == 2
+                      ? Colors.green
+                      : Colors.white,
+                  textColor: _reimbursementController.selectedstatus == 2
+                      ? Colors.white
+                      : Colors.black,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          color: _reimbursementController.selectedstatus == 2
+                              ? Colors.green
+                              : Colors.black,
+                          width: 1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 16),
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      _reimbursementController.selectedstatus = 3;
+                      _reimbursementController.status = "Ditolak";
+                    });
+                    _reimbursementController.getHistoryFilter(widget.id);
+                    Get.back();
+                  },
+                  child: Text('Ditolak',
+                      style: TextStyle(
+                          color: _reimbursementController.selectedstatus == 3
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: 11)),
+                  color: _reimbursementController.selectedstatus == 3
+                      ? Colors.green
+                      : Colors.white,
+                  textColor: _reimbursementController.selectedstatus == 3
+                      ? Colors.white
+                      : Colors.black,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          color: _reimbursementController.selectedstatus == 3
+                              ? Colors.green
+                              : Colors.black,
+                          width: 1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            child: FlatButton(
+              onPressed: () {
+                setState(() {
+                  _reimbursementController.selectedstatus = 4;
+                  _reimbursementController.status = "Belum Dikonfirmasi";
+                });
+                _reimbursementController.getHistoryFilter(widget.id);
+                Get.back();
+              },
+              child: Text('Belum Dikonfirmasi',
+                  style: TextStyle(
+                      color: _reimbursementController.selectedstatus == 4
+                          ? Colors.white
+                          : Colors.black,
+                      fontSize: 11)),
+              color: _reimbursementController.selectedstatus == 4
+                  ? Colors.green
+                  : Colors.white,
+              textColor: _reimbursementController.selectedstatus == 4
+                  ? Colors.white
+                  : Colors.black,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: _reimbursementController.selectedstatus == 4
+                          ? Colors.green
+                          : Colors.black,
+                      width: 1,
+                      style: BorderStyle.solid),
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+
+          // Container(
+          //   width: MediaQuery.of(context).size.width * 0.40,
+          //   child: DropdownButtonFormField(
+          //     style: textGrey3,
+          //     decoration: InputDecoration(),
+          //     value: _reimbursementController.status,
+          //     items: status.map((value) {
+          //       return DropdownMenuItem(
+          //         child: Text(
+          //           value,
+          //           style: textBlack,
+          //         ),
+          //         value: value,
+          //       );
+          //     }).toList(),
+          //     onChanged: (value) {
+          //       setState(() {
+          //         _reimbursementController.status = value;
+          //       });
+          //       _reimbursementController.getHistoryFilter(widget.id);
+          //     },
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
+}
+
 class HistoryReimbursement extends StatefulWidget {
   @override
   int id;
@@ -44,6 +250,17 @@ class _HistoryReimbursementState extends State<HistoryReimbursement> {
       "Telah Diterima",
       "Ditolak",
     ];
+
+    void filter_status(context) {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext bc) {
+            return FilterStatus(
+              id: widget.id,
+            );
+          });
+    }
+
     showAlertDialog(BuildContext context) {
       final GlobalKey<FormState> formkey = GlobalKey<FormState>();
       // set up the buttons
@@ -227,60 +444,62 @@ class _HistoryReimbursementState extends State<HistoryReimbursement> {
                 ),
               ),
             ),
-            Container(
-              child: Container(
-                padding: EdgeInsets.only(top: 5, right: 18, left: 18),
-                child: MaterialButton(
-                    color: navy,
-                    splashColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Filter',
-                          style: textWhite2,
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 18, right: 10, left: 18),
+                    child: MaterialButton(
+                        color: navy,
+                        splashColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 7),
-                          child: Icon(
-                            Icons.search,
-                            color: white,
-                            size: 16,
-                          ),
-                        )
-                      ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Pencarian',
+                              style: textWhite2,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 7),
+                              child: Icon(
+                                Icons.search,
+                                color: white,
+                                size: 16,
+                              ),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          showAlertDialog(context);
+                        }),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 15, top: 18),
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: FlatButton(
+                      onPressed: () {
+                        filter_status(context);
+                      },
+                      child: Text('Filter Status',
+                          style: TextStyle(color: Colors.blue, fontSize: 13)),
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: Colors.blue,
+                              width: 1,
+                              style: BorderStyle.solid),
+                          borderRadius: BorderRadius.circular(10)),
                     ),
-                    onPressed: () {
-                      showAlertDialog(context);
-                    }),
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.49,
-              padding: EdgeInsets.only(right: 18, left: 18),
-              child: DropdownButtonFormField(
-                style: textGrey3,
-                decoration: InputDecoration(),
-                value: _reimbursementController.status,
-                items: status.map((value) {
-                  return DropdownMenuItem(
-                    child: Text(
-                      value,
-                      style: textBlack,
-                    ),
-                    value: value,
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _reimbursementController.status = value;
-                  });
-                  _reimbursementController.getHistoryFilter(widget.id);
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
             Expanded(
               child: Container(
@@ -351,15 +570,40 @@ class _HistoryReimbursementState extends State<HistoryReimbursement> {
                                                   .history.value[index].kode,
                                               style: textBlack3Bold,
                                             ),
-                                            CircleButton(
-                                                onTap: () => Get.to(
-                                                        ReimbursementDetailPage(
-                                                      id: _reimbursementController
-                                                          .history
-                                                          .value[index]
-                                                          .id,
-                                                    )),
-                                                iconData: Icons.search),
+                                            GestureDetector(
+                                              onTap: () => Get.to(
+                                                  ReimbursementDetailPage(
+                                                id: _reimbursementController
+                                                    .history.value[index].id,
+                                              )),
+                                              child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 3),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[200],
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Lihat",
+                                                        style: textBlack,
+                                                      ),
+                                                      Icon(
+                                                        Icons
+                                                            .remove_red_eye_outlined,
+                                                        size: 24,
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ),
                                           ],
                                         ),
                                         Row(

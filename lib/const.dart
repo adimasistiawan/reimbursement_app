@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-DateFormat formatter = DateFormat("dd-MM-yyyy hh:mm");
+DateFormat formatter = DateFormat("dd-MM-yyyy HH:mm");
 DateFormat formatterdate = DateFormat("dd-MM-yyyy");
 final number_format =
     new NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0);

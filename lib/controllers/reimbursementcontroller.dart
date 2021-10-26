@@ -25,6 +25,7 @@ class ReimbursementController extends GetxController {
   TextEditingController kode = TextEditingController();
   File image;
   String status;
+  int selectedstatus;
 
   int telahcount = 0;
   var isLoading = true.obs;
@@ -32,6 +33,7 @@ class ReimbursementController extends GetxController {
   var isLoading3 = true.obs;
   @override
   void onInit() {
+    selectedstatus = 1;
     super.onInit();
   }
 
