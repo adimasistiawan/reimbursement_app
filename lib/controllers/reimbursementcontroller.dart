@@ -137,6 +137,7 @@ class ReimbursementController extends GetxController {
         }
       });
       all.value = val.data;
+      _homeController.getDataPegawai();
     });
     isLoading.value = false;
     update();
@@ -173,7 +174,6 @@ class ReimbursementController extends GetxController {
       ketarangan.text = val.data.keterangan;
       nominal.text = val.data.nominal.toString();
       print(val.data.nominal);
-      _homeController.getDataPegawai();
     });
     isLoading2.value = false;
     update();

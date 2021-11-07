@@ -217,7 +217,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 15,
                             crossAxisSpacing: 10,
-                            childAspectRatio: 0.8,
+                            childAspectRatio: 0.86,
                             primary: false,
                             children: [
                               Padding(

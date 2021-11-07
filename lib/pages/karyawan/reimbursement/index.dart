@@ -53,15 +53,6 @@ class _ReimbursementPegawaiPageState extends State<ReimbursementPegawaiPage>
               child: Row(
                 children: [
                   Text("Belum Dikonfirmasi "),
-                  Obx(
-                    () => Text(
-                      _reimbursementController.belum.value.length == 0
-                          ? ""
-                          : _reimbursementController.belum.value.length
-                              .toString(),
-                      style: textRed3,
-                    ),
-                  ),
                 ],
               ),
             ),

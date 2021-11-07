@@ -55,14 +55,6 @@ class _CutiPegawaiPageState extends State<CutiPegawaiPage>
               child: Row(
                 children: [
                   Text("Belum Dikonfirmasi "),
-                  Obx(
-                    () => Text(
-                      _cutiController.belum.value.length == 0
-                          ? ""
-                          : _cutiController.belum.value.length.toString(),
-                      style: textRed3,
-                    ),
-                  ),
                 ],
               ),
             ),

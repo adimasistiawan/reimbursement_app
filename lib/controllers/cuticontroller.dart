@@ -124,6 +124,7 @@ class CutiController extends GetxController {
         }
       });
       all.value = val.data;
+      _homeController.getDataPegawai();
     });
     isLoading.value = false;
     update();
@@ -162,7 +163,6 @@ class CutiController extends GetxController {
           formatterinput.format(DateTime.parse(detail.value.sampai));
       dari.text = formatterinput.format(DateTime.parse(dari.text));
       sampai.text = formatterinput.format(DateTime.parse(sampai.text));
-      _homeController.getDataPegawai();
     });
     isLoading2.value = false;
     update();
