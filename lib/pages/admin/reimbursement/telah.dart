@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
@@ -191,6 +194,35 @@ class ReimbursementTelahAdmin extends StatefulWidget {
 }
 
 class _ReimbursementTelahAdminState extends State<ReimbursementTelahAdmin> {
+  ScrollController _scrollcontroller = ScrollController();
+  int _currentMax = 4;
+  bool isProgress = false;
+  @override
+  void initState() {
+    _scrollcontroller.addListener(() {
+      if (_scrollcontroller.position.pixels ==
+          _scrollcontroller.position.maxScrollExtent) {
+        print("test");
+        setState(() {
+          isProgress = true;
+        });
+        Timer(const Duration(seconds: 2), () {
+          addList();
+          setState(() {
+            isProgress = false;
+          });
+        });
+      }
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
+  addList() {
+    _currentMax += 4;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     ReimbursementController _reimbursementController =
@@ -205,6 +237,7 @@ class _ReimbursementTelahAdminState extends State<ReimbursementTelahAdmin> {
       "Telah Diterima",
       "Ditolak",
     ];
+
     void filter_status(context) {
       showModalBottomSheet(
           context: context,
@@ -414,9 +447,9 @@ class _ReimbursementTelahAdminState extends State<ReimbursementTelahAdmin> {
                       onRefresh: () => _reimbursementController.getDataAll(),
                       child: _reimbursementController.telah.length == 0
                           ? Container(
-                              margin: EdgeInsets.only(top: 30),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Center(
                                     child: Text(
@@ -427,10 +460,33 @@ class _ReimbursementTelahAdminState extends State<ReimbursementTelahAdmin> {
                               ),
                             )
                           : ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              controller: _scrollcontroller,
                               shrinkWrap: true,
                               itemCount:
-                                  _reimbursementController.telah.value.length,
+                                  _reimbursementController.telah.value.length <
+                                          _currentMax
+                                      ? _reimbursementController
+                                              .telah.value.length +
+                                          1
+                                      : _currentMax + 1,
                               itemBuilder: (context, index) {
+                                if (index ==
+                                    (_reimbursementController
+                                                .telah.value.length <
+                                            _currentMax
+                                        ? _reimbursementController
+                                            .telah.value.length
+                                        : _currentMax)) {
+                                  return Visibility(
+                                    visible: isProgress,
+                                    child: Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        child: Center(
+                                            child:
+                                                CircularProgressIndicator())),
+                                  );
+                                }
                                 return Container(
                                   width: double.infinity,
                                   height: 220,

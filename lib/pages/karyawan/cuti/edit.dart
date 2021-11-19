@@ -62,14 +62,15 @@ class _UbahCutiState extends State<UbahCuti> {
                       showTitleActions: true,
                       minTime: DateTime.now(),
                       theme: DatePickerTheme(
-                          headerColor: Colors.orange,
+                          cancelStyle: TextStyle(color: Colors.red),
+                          headerColor: Colors.white,
                           backgroundColor: Colors.blue,
                           itemStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                           doneStyle:
-                              TextStyle(color: Colors.white, fontSize: 16)),
+                              TextStyle(color: Colors.black, fontSize: 16)),
                       onChanged: (date) {
                     // print('change $date in time zone ' +
                     //     date.timeZoneOffset.inHours.toString());
@@ -103,14 +104,15 @@ class _UbahCutiState extends State<UbahCuti> {
                       showTitleActions: true,
                       minTime: DateTime.now(),
                       theme: DatePickerTheme(
-                          headerColor: Colors.orange,
+                          cancelStyle: TextStyle(color: Colors.red),
+                          headerColor: Colors.white,
                           backgroundColor: Colors.blue,
                           itemStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                           doneStyle:
-                              TextStyle(color: Colors.white, fontSize: 16)),
+                              TextStyle(color: Colors.black, fontSize: 16)),
                       onChanged: (date) {
                     // print('change $date in time zone ' +
                     //     date.timeZoneOffset.inHours.toString());

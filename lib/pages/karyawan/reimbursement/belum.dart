@@ -24,9 +24,9 @@ class ReimbursementBelumPegawai extends StatelessWidget {
               onRefresh: () => _reimbursementController.getDataUser(),
               child: _reimbursementController.belum.length == 0
                   ? Container(
-                      margin: EdgeInsets.only(top: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Center(
                             child: Text(

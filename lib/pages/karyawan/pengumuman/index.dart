@@ -55,6 +55,7 @@ class _PengumumanPegawaiPageState extends State<PengumumanPegawaiPage> {
                     ),
                   )
                 : ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: _pengumumanController.pengumuman.value.length,
                     itemBuilder: (context, index) {

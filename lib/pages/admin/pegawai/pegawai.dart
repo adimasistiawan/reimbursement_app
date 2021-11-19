@@ -88,127 +88,78 @@ class _PegawaiPageState extends State<PegawaiPage> {
                       onChanged: onSearchTextChanged,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: _searchResult.length == 0
-                        ? Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount:
-                                  _pegawaiController.alluser.value.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  width: double.infinity,
-                                  height: 65,
-                                  padding: EdgeInsets.only(
-                                      top: 10, left: 18, right: 18),
-                                  margin: EdgeInsets.only(top: 15),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                style: textBlack3Bold,
-                                                text: _pegawaiController
-                                                    .alluser.value[index].nama,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.clip,
-                                              text: TextSpan(
-                                                  style: textBlack,
-                                                  text: _pegawaiController
-                                                      .alluser
-                                                      .value[index]
-                                                      .divisi),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      CircleButton(
-                                          onTap: () => Get.to(PegawaiDetail(
-                                                id: _pegawaiController
-                                                    .alluser.value[index].id,
-                                              )),
-                                          iconData: Icons.search),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _searchResult.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: double.infinity,
-                                height: 65,
-                                padding: EdgeInsets.only(
-                                    top: 10, left: 18, right: 18),
-                                margin: EdgeInsets.only(top: 15),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 2,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
+                  Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(top: 20, bottom: 60),
+                        child: _searchResult.length == 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount:
+                                    _pegawaiController.alluser.value.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    width: double.infinity,
+                                    height: 65,
+                                    padding: EdgeInsets.only(
+                                        top: 10, left: 18, right: 18),
+                                    margin: EdgeInsets.only(top: 15),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 2,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Flexible(
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            text: TextSpan(
-                                              style: textBlack3Bold,
-                                              text: _searchResult[index].nama,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                              child: RichText(
+                                                overflow: TextOverflow.ellipsis,
+                                                text: TextSpan(
+                                                  style: textBlack3Bold,
+                                                  text: _pegawaiController
+                                                      .alluser
+                                                      .value[index]
+                                                      .nama,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Flexible(
+                                              child: RichText(
+                                                overflow: TextOverflow.clip,
+                                                text: TextSpan(
+                                                    style: textBlack,
+                                                    text: _pegawaiController
+                                                        .alluser
+                                                        .value[index]
+                                                        .divisi),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         GestureDetector(
                                           onTap: () => Get.to(PegawaiDetail(
-                                            id: _searchResult[index].id,
+                                            id: _pegawaiController
+                                                .alluser.value[index].id,
                                           )),
                                           child: Container(
                                               padding: EdgeInsets.symmetric(
@@ -237,22 +188,105 @@ class _PegawaiPageState extends State<PegawaiPage> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.clip,
-                                        text: TextSpan(
-                                            style: textBlack,
-                                            text: _searchResult[index].divisi),
+                                  );
+                                },
+                              )
+                            : Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: _searchResult.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 65,
+                                      padding: EdgeInsets.only(
+                                          top: 10, left: 18, right: 18),
+                                      margin: EdgeInsets.only(top: 15),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: Offset(0,
+                                                3), // changes position of shadow
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    style: textBlack3Bold,
+                                                    text: _searchResult[index]
+                                                        .nama,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.clip,
+                                                  text: TextSpan(
+                                                      style: textBlack,
+                                                      text: _searchResult[index]
+                                                          .divisi),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => Get.to(PegawaiDetail(
+                                              id: _searchResult[index].id,
+                                            )),
+                                            child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 8, vertical: 3),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Lihat",
+                                                      style: textBlack,
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .remove_red_eye_outlined,
+                                                      size: 24,
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
+                              )),
                   )
                 ],
               )),

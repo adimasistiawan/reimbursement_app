@@ -162,7 +162,7 @@ class _AdminHomeState extends State<AdminHome> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 15,
                             crossAxisSpacing: 10,
-                            childAspectRatio: 0.86,
+                            childAspectRatio: 0.81,
                             primary: false,
                             children: [
                               Padding(

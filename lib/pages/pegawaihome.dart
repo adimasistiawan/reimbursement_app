@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +50,13 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                     Stack(
                       children: [
                         Container(
-                          color: Color(0xff130f40),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Color(0xff130f40), Color(0xff30336b)],
+                                stops: [0.4, 0.9]),
+                          ),
                           height: size.height * .50,
                           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                           child: Column(
@@ -217,7 +224,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 15,
                             crossAxisSpacing: 10,
-                            childAspectRatio: 0.86,
+                            childAspectRatio: 0.81,
                             primary: false,
                             children: [
                               Padding(
@@ -418,6 +425,7 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                       margin: EdgeInsets.only(top: 20),
                                       height: 175,
                                       child: ListView.builder(
+                                          physics: BouncingScrollPhysics(),
                                           scrollDirection: Axis.horizontal,
                                           itemCount: _homeController
                                               .data_pegawai
@@ -498,8 +506,9 @@ class _PegawaiHomeState extends State<PegawaiHome> {
                                                     ),
                                                     Flexible(
                                                       child: RichText(
-                                                        overflow:
-                                                            TextOverflow.clip,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         text: TextSpan(
                                                             style: textWhite2,
                                                             text: _homeController

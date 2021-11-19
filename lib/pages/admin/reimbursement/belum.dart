@@ -23,9 +23,9 @@ class ReimbursementBelumAdmin extends StatelessWidget {
               onRefresh: () => _reimbursementController.getDataAll(),
               child: _reimbursementController.belum.length == 0
                   ? Container(
-                      margin: EdgeInsets.only(top: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Center(
                             child: Text(
@@ -36,6 +36,7 @@ class ReimbursementBelumAdmin extends StatelessWidget {
                       ),
                     )
                   : ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: _reimbursementController.belum.value.length,
                       itemBuilder: (context, index) {

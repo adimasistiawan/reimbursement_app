@@ -25,8 +25,8 @@ class CutiBelumPegawai extends StatelessWidget {
               onRefresh: () => _cutiController.getDataUser(),
               child: _cutiController.belum.length == 0
                   ? Container(
-                      margin: EdgeInsets.only(top: 30),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Center(
@@ -38,6 +38,7 @@ class CutiBelumPegawai extends StatelessWidget {
                       ),
                     )
                   : ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: _cutiController.belum.value.length,
                       itemBuilder: (context, index) {

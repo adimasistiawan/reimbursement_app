@@ -26,9 +26,9 @@ class CutiBelum extends StatelessWidget {
               onRefresh: () => _cutiController.getDataAll(),
               child: _cutiController.belum.length == 0
                   ? Container(
-                      margin: EdgeInsets.only(top: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Center(
                             child: Text(
@@ -39,6 +39,7 @@ class CutiBelum extends StatelessWidget {
                       ),
                     )
                   : ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: _cutiController.belum.value.length,
                       itemBuilder: (context, index) {

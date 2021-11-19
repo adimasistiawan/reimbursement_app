@@ -39,6 +39,18 @@ class Services {
     }
   }
 
+  Future<Message> lupa_password(String email) async {
+    final response = await http.post("$baseUrl/users/lupa-password",
+        body: {'email': email}, headers: {'Accept': 'application/json'});
+
+    if (response.statusCode == 200) {
+      print(response.statusCode == 200);
+      return Responses().messageFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
   Future<ProfileClass> getProfile() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');

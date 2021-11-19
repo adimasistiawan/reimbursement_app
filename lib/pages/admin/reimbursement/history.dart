@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -226,12 +228,35 @@ class HistoryReimbursement extends StatefulWidget {
 }
 
 class _HistoryReimbursementState extends State<HistoryReimbursement> {
+  ScrollController _scrollcontroller = ScrollController();
+  int _currentMax = 4;
+  bool isProgress = false;
+  addList() {
+    _currentMax += 4;
+    setState(() {});
+  }
+
   ReimbursementController _reimbursementController =
       Get.put(ReimbursementController());
   PegawaiController _pegawaiController = Get.put(PegawaiController());
   @override
   void initState() {
     _reimbursementController.getHistory(widget.id);
+    _scrollcontroller.addListener(() {
+      if (_scrollcontroller.position.pixels ==
+          _scrollcontroller.position.maxScrollExtent) {
+        print("test");
+        setState(() {
+          isProgress = true;
+        });
+        Timer(const Duration(seconds: 2), () {
+          addList();
+          setState(() {
+            isProgress = false;
+          });
+        });
+      }
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -524,10 +549,33 @@ class _HistoryReimbursementState extends State<HistoryReimbursement> {
                                 ),
                               )
                             : ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                controller: _scrollcontroller,
                                 shrinkWrap: true,
                                 itemCount: _reimbursementController
-                                    .history.value.length,
+                                            .history.value.length <
+                                        _currentMax
+                                    ? _reimbursementController
+                                            .history.value.length +
+                                        1
+                                    : _currentMax + 1,
                                 itemBuilder: (context, index) {
+                                  if (index ==
+                                      (_reimbursementController
+                                                  .history.value.length <
+                                              _currentMax
+                                          ? _reimbursementController
+                                              .history.value.length
+                                          : _currentMax)) {
+                                    return Visibility(
+                                      visible: isProgress,
+                                      child: Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          child: Center(
+                                              child:
+                                                  CircularProgressIndicator())),
+                                    );
+                                  }
                                   return Container(
                                     width: double.infinity,
                                     height: _reimbursementController

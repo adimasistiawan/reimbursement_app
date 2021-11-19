@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:siepegawai/controllers/logincontroller.dart';
-import 'package:siepegawai/lupapassword.dart';
 import 'package:siepegawai/theme.dart';
 
-class LoginPage extends StatefulWidget {
+class LupaPassword extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LupaPassword> {
   var form = GlobalKey<FormState>();
   LoginController _login = Get.put(LoginController());
   @override
@@ -26,13 +25,8 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 200,
-                  height: 100,
-                  child: Image.asset('assets/mitrait.png'),
-                ),
                 Text(
-                  "Masuk Untuk Mendapatkan Akses",
+                  "Masukan Email Untuk Mereset Password",
                   style: textGrey2,
                 ),
                 SizedBox(
@@ -45,39 +39,13 @@ class _LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextFormField(
-                            controller: _login.email,
+                            controller: _login.email2,
                             decoration: InputDecoration(labelText: "Email"),
                             validator: (value) {
                               if (value.trim().isEmpty) {
                                 return "Mohon masukan Email";
                               }
                             },
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          TextFormField(
-                            controller: _login.password,
-                            decoration: InputDecoration(
-                              labelText: "Password",
-                            ),
-                            validator: (value) {
-                              if (value.trim().isEmpty) {
-                                return "Mohon masukan Password";
-                              }
-                            },
-                            obscureText: true,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () => Get.to(LupaPassword()),
-                            child: Text(
-                              "Lupa Password ?",
-                              style:
-                                  TextStyle(color: Colors.blue, fontSize: 15),
-                            ),
                           ),
                           SizedBox(
                             height: 24,
@@ -93,12 +61,12 @@ class _LoginPageState extends State<LoginPage> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
-                                    'Masuk',
+                                    'Reset Password',
                                     style: textWhite2,
                                   ),
                                   onPressed: () {
                                     if (form.currentState.validate()) {
-                                      _login.login();
+                                      _login.lupa_password();
                                     }
                                   }),
                             ),

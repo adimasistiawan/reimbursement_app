@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
@@ -193,6 +195,35 @@ class CutiTelah extends StatefulWidget {
 }
 
 class _CutiTelahState extends State<CutiTelah> {
+  ScrollController _scrollcontroller = ScrollController();
+  int _currentMax = 4;
+  bool isProgress = false;
+  @override
+  void initState() {
+    _scrollcontroller.addListener(() {
+      if (_scrollcontroller.position.pixels ==
+          _scrollcontroller.position.maxScrollExtent) {
+        print("test");
+        setState(() {
+          isProgress = true;
+        });
+        Timer(const Duration(seconds: 2), () {
+          addList();
+          setState(() {
+            isProgress = false;
+          });
+        });
+      }
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
+  addList() {
+    _currentMax += 4;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     CutiController _cutiController = Get.put(CutiController());
@@ -565,9 +596,9 @@ class _CutiTelahState extends State<CutiTelah> {
                       onRefresh: () => _cutiController.getDataAll(),
                       child: _cutiController.telah.length == 0
                           ? Container(
-                              margin: EdgeInsets.only(top: 30),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Center(
                                     child: Text(
@@ -578,9 +609,29 @@ class _CutiTelahState extends State<CutiTelah> {
                               ),
                             )
                           : ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              controller: _scrollcontroller,
                               shrinkWrap: true,
-                              itemCount: _cutiController.telah.value.length,
+                              itemCount: _cutiController.telah.value.length <
+                                      _currentMax
+                                  ? _cutiController.telah.value.length + 1
+                                  : _currentMax + 1,
                               itemBuilder: (context, index) {
+                                print(isProgress);
+                                if (index ==
+                                    (_cutiController.telah.value.length <
+                                            _currentMax
+                                        ? _cutiController.telah.value.length
+                                        : _currentMax)) {
+                                  return Visibility(
+                                    visible: isProgress,
+                                    child: Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        child: Center(
+                                            child:
+                                                CircularProgressIndicator())),
+                                  );
+                                }
                                 return Container(
                                   width: double.infinity,
                                   height: 220,

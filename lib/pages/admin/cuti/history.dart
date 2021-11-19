@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -225,11 +227,34 @@ class HistoryCuti extends StatefulWidget {
 }
 
 class _HistoryCutiState extends State<HistoryCuti> {
+  ScrollController _scrollcontroller = ScrollController();
+  int _currentMax = 4;
+  bool isProgress = false;
+  addList() {
+    _currentMax += 4;
+    setState(() {});
+  }
+
   CutiController _cutiController = Get.put(CutiController());
   PegawaiController _pegawaiController = Get.put(PegawaiController());
   @override
   void initState() {
     _cutiController.getHistory(widget.id);
+    _scrollcontroller.addListener(() {
+      if (_scrollcontroller.position.pixels ==
+          _scrollcontroller.position.maxScrollExtent) {
+        print("test");
+        setState(() {
+          isProgress = true;
+        });
+        Timer(const Duration(seconds: 2), () {
+          addList();
+          setState(() {
+            isProgress = false;
+          });
+        });
+      }
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -521,10 +546,30 @@ class _HistoryCutiState extends State<HistoryCuti> {
                                   ),
                                 )
                               : ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  controller: _scrollcontroller,
                                   shrinkWrap: true,
-                                  itemCount:
-                                      _cutiController.history.value.length,
+                                  itemCount: _cutiController
+                                              .history.value.length <
+                                          _currentMax
+                                      ? _cutiController.history.value.length + 1
+                                      : _currentMax + 1,
                                   itemBuilder: (context, index) {
+                                    if (index ==
+                                        (_cutiController.history.value.length <
+                                                _currentMax
+                                            ? _cutiController
+                                                .history.value.length
+                                            : _currentMax)) {
+                                      return Visibility(
+                                        visible: isProgress,
+                                        child: Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator())),
+                                      );
+                                    }
                                     return Container(
                                       width: double.infinity,
                                       height: _cutiController.history
